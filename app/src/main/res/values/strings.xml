@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Kindler</string>
+    <string name="wish_list">WishList</string>
+    <string name="book_list">Book List</string>
+    <string name="default_title">Title Not Found</string>
 </resources>
