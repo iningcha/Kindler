@@ -1,6 +1,8 @@
 package com.example.kindler;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+//import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -49,25 +53,14 @@ public class BookListActivity extends AppCompatActivity {
 
             //create Image view for book picture
             ImageView bookImage = new ImageView( BookListActivity.this);
-
-            /* not working currently
-            //get image from url
-            try {
-                String url = books.get(i).getBookPic();
-                Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
-                bookImage.setImageBitmap(bitmap);
-                bookImage.setVisibility(ImageView.VISIBLE);
-
-            }catch(MalformedURLException e) {
-                System.out.println("URL Syntax Error" + e.getMessage());
-
-            } catch (Exception e) {
-                System.out.println("Error loading image:" + e.getMessage());
-
-            }
-
-            bookImage.setImageURI(Uri.parse("C:/Users/eduardo marin/Desktop/brokenImage.png"));
-            */
+            int maxHeight = 300;
+            int maxWidth = 200;
+            bookImage.setBackgroundColor(Color.BLUE);
+            bookImage.setMaxHeight(maxHeight);
+            bookImage.setMinimumHeight(maxHeight);
+            bookImage.setMinimumWidth(maxWidth);
+            bookImage.setMaxWidth(maxWidth);
+            //Picasso.with(getBaseContext()).load("http://i.imgur.com/DvpvklR.png").into(bookImage);
 
             //add text view and image view to linear layout
             bookArea.addView(bookTitle);
