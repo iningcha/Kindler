@@ -4,4 +4,7 @@
     <string name="match_detail">Match Detail</string>
     <string name="match_profile">Profile Page</string>
     <string name="book_list">Book List</string>
+    <string name="search_button">Search</string>
+    <string name="search_query_placeholder">Enter a book title, author, or ISBN...</string>
+    <string name="main_search">Search</string>
 </resources>

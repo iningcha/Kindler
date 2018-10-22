@@ -27,4 +27,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,Profile.class);
         startActivity(intent);
     }
+
+    public void seeSearch(View view){
+        Intent intent = new Intent(this, Search.class);
+        startActivity(intent);
+    }
 }
