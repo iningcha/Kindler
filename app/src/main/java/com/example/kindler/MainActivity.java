@@ -19,12 +19,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void seeMatchDetail(View view){
-       Intent intent = new Intent(this, BookListActivity.class);
-       startActivity(intent);
+        Intent intent = new Intent(this, BookListActivity.class);
+        startActivity(intent);
     }
 
     public void seeProfile(View view){
         Intent intent = new Intent(this,Profile.class);
         startActivity(intent);
     }
+
 }
