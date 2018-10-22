@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Kindler</string>
+    <string name="match">Match Page</string>
+    <string name="match_detail">Match Detail</string>
+    <string name="match_profile">Profile Page</string>
+    <string name="book_list">Book List</string>
 </resources>
