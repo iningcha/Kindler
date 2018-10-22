@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Kindler</string>
+    <string name="app_name">Kindler App</string>
+
+    <string name="hello_world">Welcome to Kindler App!</string>
+    <string name="action_settings">Settings</string>
     <string name="match">Match Page</string>
     <string name="match_detail">Match Detail</string>
     <string name="match_profile">Profile Page</string>

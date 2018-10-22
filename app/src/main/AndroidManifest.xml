@@ -13,12 +13,14 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".BookListActivity"></activity>
         <activity android:name=".Match" />
+        <activity android:name=".LoginActivity">
+        </activity>
+        <activity android:name=".SignupActivity" />
         <activity android:name=".Profile"></activity>
         <activity android:name=".MatchDetail" android:parentActivityName=".Match"></activity>
         <activity android:name=".Search" />
