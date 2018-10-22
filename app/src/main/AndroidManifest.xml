@@ -23,7 +23,6 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".Profile"></activity>
         <activity android:name=".MatchDetail" android:parentActivityName=".Match"></activity>
-
     </application>
 
 </manifest>
