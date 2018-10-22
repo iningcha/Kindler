@@ -52,7 +52,6 @@ public class Book {
     public void addWishUser (Integer i) {
         this.mWishUser.add(i);
     }
-
     public void addOwnedUser (Integer i) {
         this.mOwnedUser.add(i);
     }

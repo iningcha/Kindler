@@ -26,13 +26,13 @@ public class UserViewModel extends AndroidViewModel{
         mAllUsers = mUserRepository.getAllUsers();
     }
 
-    LiveData<List<User>> getAllUsers() { return mAllUsers; }
+    public LiveData<List<User>> getAllUsers() { return mAllUsers; }
 
-    LiveData<User> getCurrUser() {
+    public LiveData<User> getCurrUser() {
         return mCurrUser;
     }
 
-    boolean login(String username, String password) {
+    public boolean login(String username, String password) {
         if (mUserRepository.auth(username, password)) {
             mCurrUser = mUserRepository.getCurrUser();
             return true;
@@ -40,7 +40,7 @@ public class UserViewModel extends AndroidViewModel{
         return false;
     }
 
-    boolean register(String username, String password) {
+    public boolean register(String username, String password) {
         if (mUserRepository.auth(username, password)) {
             //already registered
             return false;
@@ -51,53 +51,53 @@ public class UserViewModel extends AndroidViewModel{
         return true;
     }
 
-    void logout () {
+    public void logout () {
         mCurrUser = null;
     }
 
-    List<Integer> getWishlist() {
+    public List<Integer> getWishlist() {
         return mCurrUser.getValue().getWishList();
     }
-    List<Integer> getOwnedlist() {
+    public List<Integer> getOwnedlist() {
         return mCurrUser.getValue().getOwnedList();
     }
-    Profile getProfile() {
+    public Profile getProfile() {
         return mCurrUser.getValue().getProfile();
     }
-    List<Integer> getMatches() {
+    public List<Integer> getMatches() {
         return mCurrUser.getValue().getMatches();
     }
 
     //Can be used to update user
-    void insertUser(User user) {
+    public void insertUser(User user) {
         mUserRepository.insert(user);
     }
 
-    void addWishList(Integer i) {
+    public void addWishList(Integer i) {
         User u = mCurrUser.getValue();
         u.addWishList(i);
         mUserRepository.insert(u);
     }
 
-    void addOwnedList(Integer i) {
+    public void addOwnedList(Integer i) {
         User u = mCurrUser.getValue();
         u.addOwnedList(i);
         mUserRepository.insert(u);
     }
 
-    void removeWishList(Integer i) {
+    public void removeWishList(Integer i) {
         User u = mCurrUser.getValue();
         u.removeWishList(i);
         mUserRepository.insert(u);
     }
 
-    void removeOwnedList(Integer i) {
+    public void removeOwnedList(Integer i) {
         User u = mCurrUser.getValue();
         u.removeOwnedList(i);
         mUserRepository.insert(u);
     }
 
-    void setMatches(Integer i) {
+    public void setMatches(Integer i) {
         User u = mCurrUser.getValue();
         u.addMatches(i);
         mUserRepository.insert(u);
@@ -110,28 +110,28 @@ public class UserViewModel extends AndroidViewModel{
     }
 
     //Book
-    Book getBook(Integer i) {
+    public Book getBook(Integer i) {
         return mBookRepository.getBook(i);
     }
 
-    void addWishUser(Integer bid, Integer uid) {
+    public void addWishUser(Integer bid, Integer uid) {
         mBookRepository.getBook(bid).addWishUser(uid);
     }
 
-    void addOwnedUser(Integer bid, Integer uid) {
+    public void addOwnedUser(Integer bid, Integer uid) {
         mBookRepository.getBook(bid).addOwnedUser(uid);
     }
 
     //Match
-    LiveData<List<Match>> getMatchByOwner(int uid) {
+    public LiveData<List<Match>> getMatchByOwner(int uid) {
         return mMatchRepository.getMatchByOwner(uid);
     }
 
-    LiveData<List<Match>> getMatchByWisher(int uid) {
+    public LiveData<List<Match>> getMatchByWisher(int uid) {
         return mMatchRepository.getMatchByWisher(uid);
     }
 
-    void updateMatchStatus(int mid) {
+    public void updateMatchStatus(int mid) {
         mMatchRepository.updateStatus(mid);
     }
 }
