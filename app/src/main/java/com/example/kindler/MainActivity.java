@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void seeMatchDetail(View view){
-       Intent intent = new Intent(this, BookListActivity.class);
-       startActivity(intent);
+        Intent intent = new Intent(this, BookListActivity.class);
+        startActivity(intent);
     }
 
     public void seeProfile(View view){
@@ -32,4 +32,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,DiscoverActivity.class);
         startActivity(intent);
     }
+
 }
+

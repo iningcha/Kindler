@@ -20,9 +20,10 @@
         <activity android:name=".BookListActivity"></activity>
         <activity android:name=".DiscoverActivity"></activity>
         <activity android:name=".Match" />
-         <activity android:name=".Profile"></activity>
-        <activity android:name=".MatchDetail"
-            android:parentActivityName=".Match"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".Profile"></activity>
+        <activity android:name=".MatchDetail" android:parentActivityName=".Match"></activity>
     </application>
 
 </manifest>
