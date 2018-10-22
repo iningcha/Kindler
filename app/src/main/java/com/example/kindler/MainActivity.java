@@ -36,3 +36,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
+    public void seeDiscover(View view){
+        Intent intent = new Intent(this,DiscoverActivity.class);
+        startActivity(intent);
+    }
+}
