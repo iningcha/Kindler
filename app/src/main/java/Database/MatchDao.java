@@ -9,7 +9,7 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 @Dao
-public interface MatchDao {
+public interface    MatchDao {
 
     @Query("SELECT * from match_table WHERE owner = :uid ORDER BY matchid ASC")
     LiveData<List<Match>> getMatchByOwner(Integer uid);
