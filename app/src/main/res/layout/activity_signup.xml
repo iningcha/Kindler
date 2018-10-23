@@ -32,7 +32,7 @@
                 android:hint="Name" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Address Label -->
+        <!-- Address Label
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,8 +44,7 @@
                 android:inputType="textPostalAddress"
                 android:hint="Address" />
         </android.support.design.widget.TextInputLayout>
-
-
+        -->
 
         <!--  Email Label -->
         <android.support.design.widget.TextInputLayout
@@ -61,7 +60,7 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <!-- mobile number -->
+        <!-- mobile number
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,6 +72,7 @@
                 android:inputType="number"
                 android:hint="Mobile Number" />
         </android.support.design.widget.TextInputLayout>
+        -->
 
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
