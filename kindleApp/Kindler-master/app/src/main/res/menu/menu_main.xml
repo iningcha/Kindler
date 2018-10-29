@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.kindler.MainActivity">
+
+    <item  android:id="@+id/menu_search"
+        android:title="@string/search_button"
+        app:showAsAction="ifRoom"/>
+    <item  android:id="@+id/menu_profile"
+        android:title="@string/match_profile"
+        app:showAsAction="never"/>
+    <item  android:id="@+id/menu_booklist"
+        android:title="@string/book_list"
+        app:showAsAction="never"/>
+    <item  android:id="@+id/menu_matches"
+        android:title="@string/match"
+        app:showAsAction="never"/>
+
+    <item  android:id="@+id/logout"
+        android:title="Logout"
+        app:showAsAction="never"/>
+</menu>
