@@ -1,10 +1,12 @@
 package com.example.kindler;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,36 +20,39 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kindler.models.BookItem;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Search extends AppCompatActivity implements View.OnClickListener {
 
-    EditText _search;
-    Button _button;
-    ListView _searchResultList;
-    CustomAdapter _bookListAdapter;
-
-    ArrayList<BookItem> results;
+    EditText _mSearch;
+    Button _mButton;
+    ListView _mSearchResultList;
+    ArrayAdapter<BookItem> _mBookListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        this._search = findViewById(R.id.searchText);
-        this._button = findViewById(R.id.searchButton);
-        this._searchResultList = findViewById(R.id.searchResultsList);
+        this._mSearch = findViewById(R.id.searchText);
+        this._mButton = findViewById(R.id.searchButton);
+        this._mSearchResultList = findViewById(R.id.searchResultsList);
 
-        _bookListAdapter = new CustomAdapter();
-        this._searchResultList.setAdapter(_bookListAdapter);
+        this._mBookListAdapter = new SearchListAdapter(this, R.layout.customlist, new ArrayList<BookItem>());
+        this._mSearchResultList.setAdapter(_mBookListAdapter);
 
-        this._button.setOnClickListener(this);
+        this._mButton.setOnClickListener(this);
     }
 
     @Override
@@ -60,95 +65,108 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void handleSearch() {
-        String query = this._search.getText().toString();
-        String requestUrl = "https://www.googleapis.com/books/v1/volumes?q=" + query;
+        String query = this._mSearch.getText().toString();
+        try {
+            String requestUrl = "https://www.googleapis.com/books/v1/volumes?q=" + URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+            RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, requestUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Search.this.handleResponse(response);
-//                System.out.println(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, requestUrl,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            handleResponse(response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                }
+            });
 
-            }
-        });
-
-        queue.add(stringRequest);
+            queue.add(stringRequest);
+        } catch (UnsupportedEncodingException e) {
+            System.out.println("Couldn't encode URL");
+        }
     }
 
     private void handleResponse(String response) {
+        System.out.println(response);
         try {
-            _bookListAdapter.notifyDataSetInvalidated();
-            results.clear();
+
 
             JSONObject data = new JSONObject(response);
             JSONArray items = data.getJSONArray("items");
+            List<BookItem> books = new ArrayList<>();
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
                 JSONObject volumeInfo = item.getJSONObject("volumeInfo");
-                JSONArray authorsJSONArray = volumeInfo.getJSONArray("authors");
+                JSONArray authorsJSONArray = volumeInfo.optJSONArray("authors");
 
                 BookItem book = new BookItem();
                 book.id = item.getString("id");
                 book.title = volumeInfo.getString("title");
-                for (int j = 0; j < authorsJSONArray.length(); j++) {
-                    book.authors.add(authorsJSONArray.getString(j));
+                if (authorsJSONArray != null) {
+                    for (int j = 0; j < authorsJSONArray.length(); j++) {
+                        book.authors.add(authorsJSONArray.getString(j));
+                    }
                 }
                 book.description = volumeInfo.optString("description");
-                book.imageLink = volumeInfo.getJSONObject("imageLinks").optString("thumbnail");
+                JSONObject imageLinks = volumeInfo.optJSONObject("imageLinks");
+                if (imageLinks != null) {
+                    String thumbnail = imageLinks.optString("thumbnail");
+                    thumbnail = thumbnail.replaceFirst("http", "https");
+                    book.imageLink = thumbnail;
+                }
 
-                results.add(book);
+                books.add(book);
             }
 
-            _bookListAdapter.notifyDataSetChanged();
+            _mBookListAdapter.clear();
+            _mBookListAdapter.addAll(books);
+            _mBookListAdapter.notifyDataSetChanged();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    class CustomAdapter extends BaseAdapter {
+    class SearchListAdapter extends ArrayAdapter<BookItem> {
+        public SearchListAdapter(Context context, int resource, List<BookItem> objects) {
+            super(context, resource, objects);
+        }
+
 
         @Override
-        public int getCount(){
-            if (results == null) {
-                return 0;
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final BookItem book = getItem(position);
+
+            if(convertView == null) {
+                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.customlist, parent, false);
             }
-            return results.size();
+
+            ImageView matchImage = convertView.findViewById(R.id.matchImage);
+            TextView matchUserId = convertView.findViewById(R.id.matchUserId);
+            TextView matchBookTitle = convertView.findViewById(R.id.matchBookTitle);
+
+            if (book.imageLink != null) {
+                Picasso.with(getContext()).load(book.imageLink).into(matchImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("Successfully loaded " + book.imageLink);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                        System.out.println("Could not load " + book.imageLink);
+                    }
+                });
+            }
+
+            matchUserId.setText(book.title);
+            matchBookTitle.setText(book.getAuthorsString());
+
+            return convertView;
         }
-
-        @Override
-        public BookItem getItem(int i){
-            return results.get(i);
-        }
-
-        @Override
-        public long getItemId(int i){
-            return getItem(i).id.hashCode();
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup){
-            view = getLayoutInflater().inflate(R.layout.customlist, null);
-            ImageView matchImage = view.findViewById(R.id.matchImage);
-            TextView matchUserId = view.findViewById(R.id.matchUserId);
-            TextView matchBookTitle = view.findViewById(R.id.matchBookTitle);
-
-            BookItem item = getItem(i);
-
-            Picasso.with(getBaseContext()).load(item.imageLink).into(matchImage);
-
-            matchUserId.setText(item.title);
-            matchBookTitle.setText(item.getAuthorsString());
-
-            return view;
-        }
-
-
     }
 }
