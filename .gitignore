@@ -16,7 +16,9 @@ out/
 
 # Gradle files
 .gradle/
+.gradle/*
 build/
+build/*
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -35,13 +37,8 @@ captures/
 
 # IntelliJ
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/assetWizardSettings.xml
-.idea/dictionaries
-.idea/libraries
-.idea/caches
+.idea/*
+.idea/modules.xml
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
@@ -51,12 +48,7 @@ google-services.json
 
 # Freeline
 freeline.py
-freeline/
-freeline_project_description.json
+freeline/*
 
 # fastlane
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
-fastlane/test_output
-fastlane/readme.md
+fastlane/*
