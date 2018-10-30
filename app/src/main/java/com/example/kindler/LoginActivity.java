@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                 , _passwordText.getText().toString().trim())) {
 
             PreferencesService.instance().saveLogin_Status("true");
-          startActivity(new Intent(LoginActivity.this,DiscoverActivity.class));
+            finish();
          //   Toast.makeText(this, "Login Success", Toast.LENGTH_LONG).show();
         } else {
             // Snack Bar to show success message that record is wrong

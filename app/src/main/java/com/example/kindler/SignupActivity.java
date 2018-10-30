@@ -132,12 +132,12 @@ userDetailModel=new UserDetailModel();
             // Snack Bar to show success message that record saved successfully
 
             PreferencesService.instance().saveLogin_Status("true");
-            startActivity(new Intent(SignupActivity.this,DiscoverActivity.class));
+            finish();
         //    Toast.makeText(this, "SignUp Success", Toast.LENGTH_LONG).show();
         } else {
             // Snack Bar to show error message that record already exists
             Toast.makeText(this, "You are already registered .. Try Login", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(SignupActivity.this,LoginActivity.class));
+            finish();
         }
 
     }
