@@ -63,13 +63,16 @@ public class User {
         this.mProfile.setProfilePicture(p.getProfilePicture());
     }
 
+    //Matches
     public void setMatches(ArrayList<Integer> mMatches) {this.mMatches = mMatches;}
     public void addMatches(Integer i) {this.mMatches.add(i);}
 
+    //Wishlist
     public void setWishList(ArrayList<Integer> mWishList) {this.mWishList = mWishList; }
     public void addWishList(Integer i) {this.mWishList.add(i);}
     public void removeWishList(Integer i) {this.mWishList.remove(i);}
 
+    //OwnedList
     public void setOwnedList(ArrayList<Integer> mOwnedList) {this.mOwnedList = mOwnedList;}
     public void addOwnedList(Integer i) {this.mOwnedList.add(i);}
     public void removeOwnedList(Integer i) {this.mOwnedList.remove(i);}
