@@ -9,6 +9,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+
 @Database(entities = {User.class}, version = 1)
 @TypeConverters({ListTypeConverter.class})
 public abstract class UserRoomDatabase extends RoomDatabase {
@@ -49,7 +51,7 @@ public abstract class UserRoomDatabase extends RoomDatabase {
             super.onOpen(db);
             // If you want to keep the data through app restarts,
             // comment out the following line.
-            //new PopulateDbAsync(INSTANCE).execute();
+            new PopulateDbAsync(INSTANCE).execute();
         }
     };
 
@@ -71,10 +73,21 @@ public abstract class UserRoomDatabase extends RoomDatabase {
             // Not needed if you only populate on creation.
             //mDao.deleteAll();
 
-            User User = new User("Hello", "pw");
+            User User = new User("a@a.a", "aaaa");
+            ArrayList<Integer> a = new ArrayList<> ();
+            a.add(0);
+            a.add(1);
+            User.setWishList(a);
+            User.setOwnedList(a);
             mDao.insert(User);
-            User = new User("World", "pw");
+            /*
+            User = new User("b@b.b", "bbbb");
             mDao.insert(User);
+            User = new User("c@c.c", "cccc");
+            mDao.insert(User);
+            User = new User("d@d.d", "abcd");
+            mDao.insert(User);
+            */
             return null;
         }
     }

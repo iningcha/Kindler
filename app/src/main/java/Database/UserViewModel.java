@@ -3,6 +3,7 @@ package Database;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class UserViewModel extends AndroidViewModel{
     // - Repository is completely separated from the UI through the ViewModel.
     private LiveData<List<User>> mAllUsers;
     private LiveData<User> mCurrUser;
+    private User mCurrUserOne;
+    private static String mCurrUsername;
 
     public UserViewModel(Application application) {
         super(application);
@@ -24,115 +27,134 @@ public class UserViewModel extends AndroidViewModel{
         mBookRepository = new BookRepository(application);
         mMatchRepository = new MatchRepository(application);
         mAllUsers = mUserRepository.getAllUsers();
-
     }
 
     public LiveData<List<User>> getAllUsers() { return mAllUsers; }
 
     public LiveData<User> getCurrUser() {
-        return mCurrUser;
+        return mUserRepository.getCurrUser();
     }
 
     public boolean login(String username, String password) {
-        if (mUserRepository.auth(username, password)) {
+        User u = new User(username, password);
+        if (mUserRepository.login(u)) {
+            mCurrUserOne = u;
             mCurrUser = mUserRepository.getCurrUser();
+            this.mCurrUsername = username;
+            Log.d("UserViewModel", "set " + mCurrUsername);
             return true;
         }
         return false;
     }
 
     public boolean register(String username, String password) {
-        if (mUserRepository.auth(username, password)) {
-            //already registered
+        User u = new User(username, password);
+        if (!mUserRepository.register(u)) {
+            // already registered
             return false;
         }
         User user = new User(username, password);
         insertUser(user);
+        mCurrUserOne = user;
         mCurrUser = mUserRepository.getCurrUser();
+        mCurrUsername = username;
         return true;
     }
 
-    void logout () {
+    public void logout () {
         mCurrUser = null;
     }
 
-    List<Integer> getWishlist() {
-        return mCurrUser.getValue().getWishList();
+    //Getters
+    public List<Integer> getWishlist() {
+        User u = new User(mCurrUsername, "pw");
+        Log.d("UserViewModel", mCurrUsername);
+        return mUserRepository.getUser(u).getWishList();
     }
-    List<Integer> getOwnedlist() {
-        return mCurrUser.getValue().getOwnedList();
+    public List<Integer> getOwnedlist() {
+        User u = new User(mCurrUsername, "pw");
+        return mUserRepository.getUser(u).getOwnedList();
     }
-    Profile getProfile() {
-        return mCurrUser.getValue().getProfile();
+
+    public List<Integer> getMatches() {
+        User u = new User(mCurrUsername, "pw");
+        return mUserRepository.getUser(u).getMatches();
     }
-    List<Integer> getMatches() {
-        return mCurrUser.getValue().getMatches();
+
+    public Profile getCurrProfile() {
+        User u = new User(mCurrUsername, "pw");
+        return mUserRepository.getUser(u).getProfile();
     }
 
     //Can be used to update user
-    void insertUser(User user) {
+    public void insertUser(User user) {
         mUserRepository.insert(user);
     }
 
-    void addWishList(Integer i) {
-        User u = mCurrUser.getValue();
+    public void addWishList(Integer i) {
+        User temp = new User(mCurrUsername, "pw");
+        User u = mUserRepository.getUser(temp);
         u.addWishList(i);
         mUserRepository.insert(u);
     }
 
-    void addOwnedList(Integer i) {
-        User u = mCurrUser.getValue();
+    public void addOwnedList(Integer i) {
+        User temp = new User(mCurrUsername, "pw");
+        User u = mUserRepository.getUser(temp);
         u.addOwnedList(i);
         mUserRepository.insert(u);
     }
 
-    void removeWishList(Integer i) {
-        User u = mCurrUser.getValue();
+    public void removeWishList(Integer i) {
+        User temp = new User(mCurrUsername, "pw");
+        User u = mUserRepository.getUser(temp);
         u.removeWishList(i);
         mUserRepository.insert(u);
     }
 
-    void removeOwnedList(Integer i) {
-        User u = mCurrUser.getValue();
+    public void removeOwnedList(Integer i) {
+        User temp = new User(mCurrUsername, "pw");
+        User u = mUserRepository.getUser(temp);
         u.removeOwnedList(i);
         mUserRepository.insert(u);
     }
 
-    void setMatches(Integer i) {
-        User u = mCurrUser.getValue();
+    public void setMatches(Integer i) {
+        User temp = new User(mCurrUsername, "pw");
+        User u = mUserRepository.getUser(temp);
         u.addMatches(i);
         mUserRepository.insert(u);
     }
 
-    void setProfile(Profile p) {
-        User u = mCurrUser.getValue();
-        u.setProfile(p);
-        mUserRepository.insert(u);
-    }
-
     //Book
-    Book getBook(Integer i) {
-        return mBookRepository.getBook(i);
+    public Book getBook(Integer i) {
+        Book b = new Book("b", "b");
+        b.setBookId(i);
+        return mBookRepository.getBook(b);
     }
 
-    void addWishUser(Integer bid, Integer uid) {
-        mBookRepository.getBook(bid).addWishUser(uid);
+    public void addWishUser(Integer bid, Integer uid) {
+        Book b = new Book("b", "b");
+        b.setBookId(bid);
+        mBookRepository.getBook(b).addWishUser(uid);
     }
 
-    void addOwnedUser(Integer bid, Integer uid) {
-        mBookRepository.getBook(bid).addOwnedUser(uid);
+    public void addOwnedUser(Integer bid, Integer uid) {
+        Book b = new Book("b", "b");
+        b.setBookId(bid);
+        mBookRepository.getBook(b).addOwnedUser(uid);
     }
 
     //Match
-    LiveData<List<Match>> getMatchByOwner(int uid) {
+    public LiveData<List<Match>> getMatchByOwner(int uid) {
         return mMatchRepository.getMatchByOwner(uid);
     }
 
-    LiveData<List<Match>> getMatchByWisher(int uid) {
+    public LiveData<List<Match>> getMatchByWisher(int uid) {
         return mMatchRepository.getMatchByWisher(uid);
     }
 
-    void updateMatchStatus(int mid) {
+    public void updateMatchStatus(int mid) {
         mMatchRepository.updateStatus(mid);
     }
 }
