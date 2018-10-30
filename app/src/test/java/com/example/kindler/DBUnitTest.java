@@ -121,15 +121,9 @@ public class DBUnitTest {
     @Test
     public void add_owned_user_test() throws Exception{
         //create input and output array
-        ArrayList<Integer> input = new ArrayList<Integer>();
-        ArrayList<Integer> expected = new ArrayList<Integer>();
-        for(int i=0 ; i < 10; i++){
-            input.add(i*2);
-            expected.add(i*2);
-        }
 
         //set up book
-        Database.Book test = new Database.Book("book1","pic1",input,input);
+        Database.Book test = new Database.Book("book1","pic1");
 
         //create number to insert
         Integer num = 3;
@@ -146,16 +140,9 @@ public class DBUnitTest {
 
     @Test
     public void add_wish_user_test() throws Exception{
-        //create input and output array
-        ArrayList<Integer> input = new ArrayList<Integer>();
-        ArrayList<Integer> expected = new ArrayList<Integer>();
-        for(int i=0 ; i < 10; i++){
-            input.add(i);
-            expected.add(i);
-        }
-
+  
         //set up book
-        Database.Book test = new Database.Book("book1","pic1",input,input);
+        Database.Book test = new Database.Book("book1","pic1");
 
         //create number to insert
         Integer num = 3;
