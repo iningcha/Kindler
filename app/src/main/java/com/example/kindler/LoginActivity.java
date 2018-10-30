@@ -1,6 +1,7 @@
 package com.example.kindler;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.*;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +12,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import Database.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private UserViewModel mUserViewModel;
 
     @BindView(R.id.input_email)
     EditText _emailText;
@@ -32,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -73,13 +77,18 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
+        final boolean success = mUserViewModel.login(email, password);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+                        if (success) {
+                            onLoginSuccess();
+                        }
+                        else {
+                            onLoginFailed();
+                        }
                         progressDialog.dismiss();
                     }
                 }, 3000);

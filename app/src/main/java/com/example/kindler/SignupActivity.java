@@ -1,6 +1,7 @@
 package com.example.kindler;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +12,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import Database.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+    private UserViewModel mUserViewModel;
 
     @BindView(R.id.input_name)
     EditText _nameText;
@@ -39,6 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +79,10 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        //String address = _addressText.getText().toString();
-        String email = _emailText.getText().toString();
-        //String mobile = _mobileText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String reEnterPassword = _reEnterPasswordText.getText().toString();
+        final String name = _nameText.getText().toString();
+        final String email = _emailText.getText().toString();
+        final String password = _passwordText.getText().toString();
+        final String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
 
@@ -89,8 +91,15 @@ public class SignupActivity extends AppCompatActivity {
                     public void run() {
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
+                        Log.d(TAG, "register");
+                        if (mUserViewModel.register(name, password)) {
+                            Log.d(TAG, "success");
+                            onSignupSuccess();
+                        }
+                        else {
+                            Log.d(TAG, "fail");
+                            onSignupFailed();
+                        }
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -113,9 +122,7 @@ public class SignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
-        //String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
-        //String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -126,14 +133,6 @@ public class SignupActivity extends AppCompatActivity {
             _nameText.setError(null);
         }
 
-       // if (address.isEmpty()) {
-         //   _addressText.setError("Enter Valid Address");
-           // valid = false;
-        //} else {
-          //  _addressText.setError(null);
-        //}
-
-
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
             valid = false;
@@ -141,12 +140,6 @@ public class SignupActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-      //  if (mobile.isEmpty() || mobile.length()!=10) {
-        //    _mobileText.setError("Enter Valid Mobile Number");
-          //  valid = false;
-        //} else {
-          //  _mobileText.setError(null);
-        //}
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");

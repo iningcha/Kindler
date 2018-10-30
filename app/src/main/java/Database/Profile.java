@@ -12,6 +12,12 @@ public class Profile {
     @ColumnInfo(name = "pic")
     public String mProfilePicture;
 
+    Profile() {
+        this.mProfileName = "anon";
+        this.mProfileBiography = "bio";
+        this.mProfilePicture = "pic";
+    }
+
     //getters
     public String getProfileName(){return this.mProfileName;}
     public String getProfileBiography(){return this.mProfileBiography;}
