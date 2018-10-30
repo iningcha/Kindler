@@ -1,14 +1,25 @@
 package com.example.kindler;
 
+import android.support.test.espresso.intent.rule.IntentsTestRule;
+
 import com.example.kindler.models.BookItem;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.List;
 
+import static android.support.test.espresso.Espresso.closeSoftKeyboard;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+@RunWith(JUnit4.class)
 public class SearchUnitTest {
     private final Search searchActivity = new Search();
 
