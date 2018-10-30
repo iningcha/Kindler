@@ -64,44 +64,54 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void handleSearch() {
-        String query = this._mSearch.getText().toString();
+    public String getRequestUrl(String query) {
         try {
-            String requestUrl = "https://www.googleapis.com/books/v1/volumes?q=" + URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
-
-            RequestQueue queue = Volley.newRequestQueue(this);
-
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, requestUrl,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            handleResponse(response);
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                }
-            });
-
-            queue.add(stringRequest);
+            return "https://www.googleapis.com/books/v1/volumes?q=" + URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             System.out.println("Couldn't encode URL");
         }
+        return null;
     }
 
-    private void handleResponse(String response) {
-        System.out.println(response);
-        try {
+    public String convertToHTTPS(String url) {
+        return url.replaceFirst("http://", "https://");
+    }
 
+    public void handleSearch() {
+        String query = this._mSearch.getText().toString();
+        String url = getRequestUrl(query);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        List<BookItem> books = parseSearchResponse(response);
+
+                        _mBookListAdapter.clear();
+                        _mBookListAdapter.addAll(books);
+                        _mBookListAdapter.notifyDataSetChanged();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        queue.add(stringRequest);
+    }
+
+    public List<BookItem> parseSearchResponse(String response) {
+        List<BookItem> books = new ArrayList<>();
+        try {
 
             JSONObject data = new JSONObject(response);
             JSONArray items = data.getJSONArray("items");
-            List<BookItem> books = new ArrayList<>();
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
                 JSONObject volumeInfo = item.getJSONObject("volumeInfo");
                 JSONArray authorsJSONArray = volumeInfo.optJSONArray("authors");
-
                 BookItem book = new BookItem();
                 book.id = item.getString("id");
                 book.title = volumeInfo.getString("title");
@@ -114,20 +124,18 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
                 JSONObject imageLinks = volumeInfo.optJSONObject("imageLinks");
                 if (imageLinks != null) {
                     String thumbnail = imageLinks.optString("thumbnail");
-                    thumbnail = thumbnail.replaceFirst("http", "https");
-                    book.imageLink = thumbnail;
+                    book.imageLink = convertToHTTPS(thumbnail);
+                } else {
+                    book.imageLink = "";
                 }
 
                 books.add(book);
             }
 
-            _mBookListAdapter.clear();
-            _mBookListAdapter.addAll(books);
-            _mBookListAdapter.notifyDataSetChanged();
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return books;
     }
 
     class SearchListAdapter extends ArrayAdapter<BookItem> {
