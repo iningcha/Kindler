@@ -16,18 +16,18 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 /**
  * Created by samanthachang on 10/29/18.
  */
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class DiscoverActivityUITest {
+public class MatchDetailButton {
 
     @Rule
-    public ActivityTestRule<DiscoverActivity> mActivityRule =
-            new ActivityTestRule<>(DiscoverActivity.class);
+    public ActivityTestRule<MatchDetail> mActivityRule =
+            new ActivityTestRule<>(MatchDetail.class);
 
     @Test
-    public void testUIFunction(){
-        onView(withId(R.id.activity_main_progress_bar)).check(matches(isDisplayed()));
-        onView(withId(R.id.activity_main_card_stack_view)).check(matches(isDisplayed()));
-    }
+    public void testUIfunction() {
+        onView(withId(R.id.messageButton)).check(matches(isDisplayed()));
 
+    }
 }
