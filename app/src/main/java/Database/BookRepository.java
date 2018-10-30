@@ -2,6 +2,9 @@ package Database;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import java.util.List;
 
 public class BookRepository {
     private BookDao mBookDao;
@@ -11,8 +14,37 @@ public class BookRepository {
         mBookDao = db.BookDao();
     }
 
-    Book getBook(Integer bi) {
-        return mBookDao.getBook(bi);
+    Book getBook(Book b) {
+        BookRepository.getBookAsyncTask guat = new BookRepository.getBookAsyncTask(mBookDao);
+        //Log.d("UserRepo", u.getUsername());
+        guat.execute(b);
+        Book res = new Book("fake", "pic");
+        try {
+            res = guat.get();
+        } catch (Exception e) {
+
+        }
+        return res;
+    }
+
+    private static class getBookAsyncTask extends AsyncTask<Book, Void, Book> {
+        private BookDao mAsyncTaskDao;
+
+        getBookAsyncTask(BookDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Book doInBackground(final Book... params) {
+            List<Book> list = mAsyncTaskDao.getBook(params[0].getBookId());
+            Log.d("BookRepo", Integer.toString(params[0].getBookId()));
+            if (list.size() == 0) {
+                Log.d("BookRepo", "bad query");
+                Book b = new Book("no", "pic");
+                return b;
+            }
+            return list.get(0);
+        }
     }
 
     // You must call this on a non-UI thread or your app will crash.
