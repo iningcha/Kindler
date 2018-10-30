@@ -23,11 +23,10 @@ public class MatchDetail extends AppCompatActivity {
         TextView matchDetail_bookName = findViewById(R.id.matchDetail_bookName);
         ImageView matchDetail_profilePicture = findViewById(R.id.matchDetail_profilePicture);
 
-
         matchDetail_userName.setText(matchUser);
         matchDetail_bookName.setText(bookName);
         matchDetail_profilePicture.setImageResource(image);
 
-
     }
+
 }

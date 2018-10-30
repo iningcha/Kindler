@@ -65,7 +65,7 @@ public class UserViewModel extends AndroidViewModel{
     Profile getProfile() {
         return mCurrUser.getValue().getProfile();
     }
-    List<Integer> getMatches() {
+    public List<Integer> getMatches() {
         return mCurrUser.getValue().getMatches();
     }
 

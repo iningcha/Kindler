@@ -14,8 +14,6 @@ import android.view.*;
 
 public class Match extends AppCompatActivity {
 
-    int sampleImage = R.drawable.test;
-
     String[] bookIDs = {"Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"};
 
     String[] userId = {"User1", "User2", "User3", "User4", "User5", "User6"};
@@ -36,6 +34,8 @@ public class Match extends AppCompatActivity {
         images[3] = R.drawable.animal;
         images[4] = R.drawable.gone;
         images[5] = R.drawable.to;
+
+        //getting the bookID, userId, and images from the database
 
         CustomAdapter customAdapter = new CustomAdapter();
 
@@ -60,6 +60,10 @@ public class Match extends AppCompatActivity {
 
         });
 
+    }
+
+    public int getMatchListSize(){
+        return bookIDs.length;
     }
 
     class CustomAdapter extends BaseAdapter{

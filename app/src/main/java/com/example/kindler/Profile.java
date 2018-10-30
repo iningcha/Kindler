@@ -27,19 +27,13 @@ public class Profile extends AppCompatActivity {
         name = findViewById(R.id.name);
         biography = findViewById(R.id.biography);
 
+        //populate by getting the data from the database
+
         profilePicture.setImageResource(R.drawable.test);
         name.setText("Samantha Chang");
         biography.setText("Student studying CS at USC");
 
-//        UserViewModel mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-//
-//        mUserViewModel.getCurrUser().observe(this, new Observer<User>() {
-//            @Override
-//            public void onChanged(@Nullable User user) {
-//                name.setText(user.getProfile().getProfileName());
-//            }
-//        });
-
-
     }
+
+
 }
