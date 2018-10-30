@@ -4,9 +4,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,12 +25,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import Database.UserViewModel;
+
 public class MainActivity extends AppCompatActivity {
+
+    private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         setup();
         reload();
         Toolbar mtoolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -56,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(intentprofile);
                 break;
             case R.id.menu_booklist:
-                Intent intentbooklist = new Intent(this, Profile.class);
+                Intent intentbooklist = new Intent(this, BookListActivity.class);
                 this.startActivity(intentbooklist);
                 break;
             case R.id.menu_matches:
@@ -262,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
         overlayAnimator.setDuration(200);
         AnimatorSet overlayAnimationSet = new AnimatorSet();
         overlayAnimationSet.playTogether(overlayAnimator);
+
 
         cardStackView.swipe(SwipeDirection.Right, cardAnimationSet, overlayAnimationSet);
     }

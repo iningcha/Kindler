@@ -1,8 +1,10 @@
 package com.example.kindler;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -15,21 +17,22 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Database.Book;
+import Database.UserViewModel;
 
 public class BookListActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout bookshelf;
-    private ArrayList<Integer> bookList;
-    private ArrayList<Book> books;
+    private List<Book> books;
+    private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        //fake data to test layout
-        bookList = LoadBookList();
         books = LoadBooks();
 
         //create horizontal linear layout for books
@@ -39,7 +42,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         bookshelf.setOrientation(LinearLayout.VERTICAL);
 
         //add books to scroll bar
-        for (int i = 0; i < bookList.size(); i++) {
+        for (int i = 0; i < books.size(); i++) {
             //create horizontal linear layout to hold book and remove button
             LinearLayout bookView = new LinearLayout(BookListActivity.this);
             bookView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -71,7 +74,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
             bookImage.setMinimumHeight(maxHeight);
             bookImage.setMinimumWidth(maxWidth);
             bookImage.setMaxWidth(maxWidth);
-            Picasso.with(getBaseContext()).load("http://i.imgur.com/DvpvklR.png").into(bookImage);
+            Picasso.with(getBaseContext()).load(books.get(i).getBookPic()).into(bookImage);
 
             //add text view and image view to book linear layout
             bookArea.addView(bookTitle);
@@ -102,9 +105,10 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         int pos = (int) v.getTag();
 
         //store book name for message
-        String name = books.get(bookList.get(pos)).getBookName();
+        String name = books.get(mUserViewModel.getWishlist().get(pos)).getBookName();
 
         //remove book at ownedBooks[pos]
+        mUserViewModel.removeWishList(pos);
 
         //remove book associated with button
         bookshelf.removeView((View)v.getParent());
@@ -114,39 +118,14 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         Toast.makeText(getApplicationContext(), message , Toast.LENGTH_SHORT ).show();
     }
 
-
-    //load indices of books
-    protected ArrayList<Integer> LoadBookList()
-    {
-        ArrayList<Integer> books = new ArrayList<Integer>();
-        for(int i=0 ;i < 10; i++)
-        {
-            books.add(i);
-        }
-        return books;
-    }
-
     //load book pictures
     protected ArrayList<Book> LoadBooks()
     {
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
-
-        //get random url's for pictures
-        ArrayList<String> urls = new ArrayList<String>();
-
-        for(int i=0 ;i<10;i++) {
-            urls.add("https://vignette.wikia.nocookie.net/blogclan-2/images/b/b9/Random-image-15.jpg/revision/latest?cb=20160706220047");
-        }
-
-        for(int i=0 ; i < 10 ; i++)
-        {
-            Integer book_id = i;
-            String title = "FakeBook" + i;
-            String pic = urls.get(i);
-
-            Book fake = new Book(title,pic, new ArrayList<Integer>(), new ArrayList<Integer>() );
-            books.add(fake);
+        Log.d("BookListActivity", Integer.toString(mUserViewModel.getWishlist().size()));
+        for (int i : mUserViewModel.getWishlist()) {
+            books.add(mUserViewModel.getBook(i));
         }
 
         return books;
