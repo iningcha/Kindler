@@ -31,11 +31,11 @@ public class Book {
     @TypeConverters(ListTypeConverter.class)
     private ArrayList<Integer> mOwnedUser;
 
-    public Book(String bookName, String bookPic, ArrayList<Integer> wishUser, ArrayList<Integer> ownedUser) {
+    public Book(String bookName, String bookPic) {
         this.mBookName = bookName;
         this.mBookPic = bookPic;
-        this.mWishUser = wishUser;
-        this.mOwnedUser = ownedUser;
+        this.mWishUser = new ArrayList<Integer>();
+        this.mOwnedUser = new ArrayList<Integer>();
     }
 
     //getters
@@ -49,10 +49,11 @@ public class Book {
     public void setBookId(int i) {
         this.mBookId = i;
     }
+    public void setWishUser (ArrayList<Integer> a) {this.mWishUser = a;}
+    public void setOwnedUser (ArrayList<Integer> a) {this.mOwnedUser = a;}
     public void addWishUser (Integer i) {
         this.mWishUser.add(i);
     }
-
     public void addOwnedUser (Integer i) {
         this.mOwnedUser.add(i);
     }

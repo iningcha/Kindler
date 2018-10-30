@@ -1,21 +1,13 @@
 package com.example.kindler;
 
-import android.support.test.espresso.intent.rule.IntentsTestRule;
-
 import com.example.kindler.models.BookItem;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.List;
 
-import static android.support.test.espresso.Espresso.closeSoftKeyboard;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -33,6 +25,12 @@ public class SearchUnitTest {
     public void testGetRequestUrl2() {
         String url = searchActivity.getRequestUrl("Crime & Punishment");
         assertThat(url, is("https://www.googleapis.com/books/v1/volumes?q=Crime+%26+Punishment"));
+
+        url = searchActivity.getRequestUrl("ü, ä, ö é, è, â");
+        assertThat(url, is("https://www.googleapis.com/books/v1/volumes?q=%C3%BC%2C%20%C3%A4%2C%20%C3%B6%20%C3%A9%2C%20%C3%A8%2C%20%C3%A2"));
+
+        url = searchActivity.getRequestUrl("C++ Programming");
+        assertThat(url, is("https://www.googleapis.com/books/v1/volumes?q=C%2B%2B%20Programming"));
     }
 
     @Test

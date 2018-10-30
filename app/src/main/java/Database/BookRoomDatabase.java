@@ -72,11 +72,10 @@ public abstract class BookRoomDatabase extends RoomDatabase {
             // Start the app with a clean database every time.
             // Not needed if you only populate on creation.
             //mDao.deleteAll();
-            ArrayList<Integer> a = new ArrayList<>();
 
-            Book book = new Book("The Martian", "", a, a);
+            Book book = new Book("The Way of the Kings", "https://upload.wikimedia.org/wikipedia/en/8/8b/TheWayOfKings.png");
             mDao.insert(book);
-            book = new Book("Artemis", "", a, a);
+            book = new Book("The Lord of The Rings", "https://vignette.wikia.nocookie.net/lotr/images/d/db/51eq24cRtRL._SX331_BO1%2C204%2C203%2C200_.jpg/revision/latest/scale-to-width-down/220?cb=20160701231234");
             mDao.insert(book);
             return null;
         }
