@@ -145,7 +145,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
             String title = "FakeBook" + i;
             String pic = urls.get(i);
 
-            Book fake = new Book(title,pic, new ArrayList<Integer>(), new ArrayList<Integer>() );
+            Book fake = new Book(title,pic);
             books.add(fake);
         }
 

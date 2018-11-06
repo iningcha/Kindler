@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kindler App</string>
+    <string name="app_name">Kindler</string>
 
     <string name="hello_world">Welcome to Kindler App!</string>
     <string name="action_settings">Settings</string>

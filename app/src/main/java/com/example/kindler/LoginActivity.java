@@ -1,6 +1,7 @@
 package com.example.kindler;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -47,6 +48,7 @@ import butterknife.ButterKnife;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private UserViewModel mUserViewModel;
 
     @BindView(R.id.input_email)
     EditText _emailText;
@@ -67,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         setContentView(R.layout.activity_login);
 
@@ -182,12 +184,13 @@ public class LoginActivity extends AppCompatActivity {
                 , _passwordText.getText().toString().trim())) {
 
             PreferencesService.instance().saveLogin_Status("true");
+            mUserViewModel.login(_emailText.getText().toString().trim(), _passwordText.getText().toString().trim()); //temporarily just register a new account
             finish();
-         //   Toast.makeText(this, "Login Success", Toast.LENGTH_LONG).show();
+            //   Toast.makeText(this, "Login Success", Toast.LENGTH_LONG).show();
         } else {
             // Snack Bar to show success message that record is wrong
             Toast.makeText(this, "User credentials are wrong or is not Registered", Toast.LENGTH_LONG).show();
-           // startActivity(new Intent(LoginActivity.this,SignupActivity.class));
+            // startActivity(new Intent(LoginActivity.this,SignupActivity.class));
         }
 
     }
@@ -234,27 +237,27 @@ public class LoginActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-       if (isEmail(_emailText.getText().toString())){
-           _emailText.setError(null);
-       }
-       else {
-           _emailText.setError("enter a valid email address");
-       }
+        if (isEmail(_emailText.getText().toString())){
+            _emailText.setError(null);
+        }
+        else {
+            _emailText.setError("enter a valid email address");
+        }
 
         if (isPassword(_passwordText.getText().toString())){
-           _passwordText.setError(null);
+            _passwordText.setError(null);
 
-       }
-       else {
-           _passwordText.setError("between 4 and 10 alphanumeric characters");
-       }
+        }
+        else {
+            _passwordText.setError("between 4 and 10 alphanumeric characters");
+        }
 
-       if (isEmail(_emailText.getText().toString()) && isPassword(_passwordText.getText().toString())){
-           return true;
-       }
-       else {
-           return false;
-       }
+        if (isEmail(_emailText.getText().toString()) && isPassword(_passwordText.getText().toString())){
+            return true;
+        }
+        else {
+            return false;
+        }
 
 
     }

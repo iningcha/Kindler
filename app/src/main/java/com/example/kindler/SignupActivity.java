@@ -1,6 +1,7 @@
 package com.example.kindler;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,10 +26,11 @@ import butterknife.ButterKnife;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+    private UserViewModel mUserViewModel;
 
     @BindView(R.id.input_name)
     EditText _nameText;
-   // @BindView(R.id.input_address)
+    // @BindView(R.id.input_address)
     //EditText _addressText;
     @BindView(R.id.input_email)
     EditText _emailText;
@@ -52,11 +54,12 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         PreferencesService.init(this);
 
         databaseHelper = new DatabaseHelper(SignupActivity.this);
-userDetailModel=new UserDetailModel();
+        userDetailModel=new UserDetailModel();
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,11 +132,12 @@ userDetailModel=new UserDetailModel();
 
             databaseHelper.addUserDetailModel(userDetailModel);
 
+            mUserViewModel.register(_emailText.getText().toString().trim(), _passwordText.getText().toString().trim()); //just register a new account in room
             // Snack Bar to show success message that record saved successfully
 
             PreferencesService.instance().saveLogin_Status("true");
             finish();
-        //    Toast.makeText(this, "SignUp Success", Toast.LENGTH_LONG).show();
+            //    Toast.makeText(this, "SignUp Success", Toast.LENGTH_LONG).show();
         } else {
             // Snack Bar to show error message that record already exists
             Toast.makeText(this, "You are already registered .. Try Login", Toast.LENGTH_LONG).show();
@@ -151,7 +155,7 @@ userDetailModel=new UserDetailModel();
     public boolean isEmptyName(String name)
     {
         boolean valid = true;
-      //  String name = _nameText.getText().toString();
+        //  String name = _nameText.getText().toString();
         if (name.isEmpty() || name.length() < 3) {
 
             valid = true;
@@ -222,46 +226,46 @@ userDetailModel=new UserDetailModel();
             _nameText.setError(null);
         }
 
-         if (isEmail(_emailText.getText().toString())){
-    _emailText.setError(null);
+        if (isEmail(_emailText.getText().toString())){
+            _emailText.setError(null);
 
-}
-else {
+        }
+        else {
 
-    _emailText.setError("enter a valid email address");
-}
+            _emailText.setError("enter a valid email address");
+        }
 
-if (isPassword(_passwordText.getText().toString())){
-    _passwordText.setError(null);
+        if (isPassword(_passwordText.getText().toString())){
+            _passwordText.setError(null);
 
-}
-else {
+        }
+        else {
 
-    _passwordText.setError("between 4 and 10 alphanumeric characters");
+            _passwordText.setError("between 4 and 10 alphanumeric characters");
 
-}
+        }
 
-if (isConfirmPass(_passwordText.getText().toString(),_reEnterPasswordText.getText().toString())){
-    _reEnterPasswordText.setError(null);
+        if (isConfirmPass(_passwordText.getText().toString(),_reEnterPasswordText.getText().toString())){
+            _reEnterPasswordText.setError(null);
 
-}
-else {
+        }
+        else {
 
-    _reEnterPasswordText.setError("Password Do not match");
+            _reEnterPasswordText.setError("Password Do not match");
 
-}
+        }
 
-if (!isEmptyName(_nameText.getText().toString()) &&
-        isEmail(_emailText.getText().toString()) &&
-        isPassword(_passwordText.getText().toString()) &&
-        isConfirmPass(_passwordText.getText().toString(),_reEnterPasswordText.getText().toString()))
-{
-    return true;
-}
-else
-{
-    return false;
-}
+        if (!isEmptyName(_nameText.getText().toString()) &&
+                isEmail(_emailText.getText().toString()) &&
+                isPassword(_passwordText.getText().toString()) &&
+                isConfirmPass(_passwordText.getText().toString(),_reEnterPasswordText.getText().toString()))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 
 
     }
