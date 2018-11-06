@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(intentprofile);
                 break;
             case R.id.menu_booklist:
-                Intent intentbooklist = new Intent(this, Profile.class);
+                Intent intentbooklist = new Intent(this, BookListActivity.class);
                 this.startActivity(intentbooklist);
                 break;
             case R.id.menu_matches:
