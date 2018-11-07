@@ -75,23 +75,31 @@ public abstract class BookRoomDatabase extends RoomDatabase {
             //mDao.deleteAll();
 
             Book book = new Book("The Way of the Kings", "https://upload.wikimedia.org/wikipedia/en/8/8b/TheWayOfKings.png");
+            book.setBookId(0);
             mDao.insert(book);
-            Log.d("BookRoomDatabaseLog", "Book Id" + Integer.toString(book.getBookId()));
             book = new Book("The Lord of The Rings", "https://vignette.wikia.nocookie.net/lotr/images/d/db/51eq24cRtRL._SX331_BO1%2C204%2C203%2C200_.jpg/revision/latest/scale-to-width-down/220?cb=20160701231234");
+            book.setBookId(1);
             mDao.insert(book);
             book = new Book("The Martian", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7onMDKEa8nLOVMnI1iCSDIooR7ZGhEJ4tTfQyD4v99TnDwsK9");
+            book.setBookId(2);
             mDao.insert(book);
             book = new Book("The Chronicles of Narnia", "https://images.gr-assets.com/books/1357470998l/6753727.jpg");
+            book.setBookId(3);
             mDao.insert(book);
             book = new Book("Harry Potter and the Socerer's Stone", "https://am23.akamaized.net/tms/cnt/uploads/2017/06/harry-potter-and-the-sorcerers-stone-222x300.jpg");
+            book.setBookId(4);
             mDao.insert(book);
             book = new Book("The Fountainhead", "https://images-na.ssl-images-amazon.com/images/I/510VwbbHZkL._SX303_BO1,204,203,200_.jpg");
+            book.setBookId(5);
             mDao.insert(book);
             book = new Book("Ender's Game", "https://prodimage.images-bn.com/pimages/9780765342294_p0_v1_s550x406.jpg");
+            book.setBookId(6);
             mDao.insert(book);
             book = new Book("Artemis", "http://www.mymbuzz.com/wp-content/uploads/sites/2/2017/06/artemis-jacket-fullsize.jpg");
+            book.setBookId(7);
             mDao.insert(book);
             book = new Book("Mistborn", "https://images-na.ssl-images-amazon.com/images/I/91VZMbqbuZL.jpg");
+            book.setBookId(8);
             mDao.insert(book);
 
             return null;
