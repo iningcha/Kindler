@@ -91,6 +91,7 @@ public class UserViewModel extends AndroidViewModel{
         User u = new User("u", "u");
         u.setUserId(i);
         return mUserRepository.getUser(u);
+    }
 
     public int getCurrUserId() {
         User u = new User(mCurrUsername, "pw");
