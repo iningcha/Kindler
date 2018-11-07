@@ -69,7 +69,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
             ImageView bookImage = new ImageView( BookListActivity.this);
             int maxHeight = 300;
             int maxWidth = 200;
-            bookImage.setBackgroundColor(Color.BLUE);
+            bookImage.setBackgroundColor(Color.WHITE);
             bookImage.setMaxHeight(maxHeight);
             bookImage.setMinimumHeight(maxHeight);
             bookImage.setMinimumWidth(maxWidth);
@@ -106,9 +106,11 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
 
         //store book name for message
         String name = books.get(mUserViewModel.getOwnedlist().get(pos)).getBookName();
+        int bid = books.get(mUserViewModel.getWishlist().get(pos)).getBookId();
+        Log.d("BookListActivity", Integer.toString(bid));
 
         //remove book at ownedBooks[pos]
-        mUserViewModel.removeWishList(pos);
+        mUserViewModel.removeOwnedList(bid);
 
         //remove book associated with button
         bookshelf.removeView((View)v.getParent());
@@ -125,6 +127,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         ArrayList<Book> books = new ArrayList<Book>();
         Log.d("BookListActivity", Integer.toString(mUserViewModel.getOwnedlist().size()));
         for (int i : mUserViewModel.getOwnedlist()) {
+            Log.d("BookListActivity", Integer.toString(i));
             books.add(mUserViewModel.getBook(i));
         }
 
