@@ -54,13 +54,13 @@ public class UserRepository {
         @Override
         protected User doInBackground(final User... params) {
 
-            List<User> list = mAsyncTaskDao.auth(params[0].getUsername());
-            if (list.size() == 0) {
+            User u = mAsyncTaskDao.getUser(params[0].getUserId());
+
+            if (u == null) {
                 Log.d("UserRepo", "bad query");
-                User u = new User("no", "pw");
-                return u;
+                u = new User("no", "pw");
             }
-            return list.get(0);
+            return u;
         }
     }
 
@@ -145,7 +145,7 @@ public class UserRepository {
     }
 
     // You must call this on a non-UI thread or your app will crash.
-    // Like this, Room ensures that you're not doing any long running operations on the main
+    // Like this, Room ensures that you're not doinget any long running operations on the main
     // thread, blocking the UI.
     void insert(User user) {
         insertAsyncTask iat = new insertAsyncTask(mUserDao);

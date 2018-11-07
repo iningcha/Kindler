@@ -19,8 +19,12 @@ public interface UserDao {
     @Query("SELECT * from user_table WHERE username = :un LIMIT 1")
     LiveData<User> getCurrUser(String un);
 
+    @Query("SELECT * from user_table WHERE userid = :un")
+    User getUser(int un);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(User user);
+
 
     //@Query("DELETE FROM user_table")
     //void deleteAll();

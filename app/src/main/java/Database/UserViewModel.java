@@ -86,6 +86,13 @@ public class UserViewModel extends AndroidViewModel{
         return mUserRepository.getUser(u).getProfile();
     }
 
+    //User
+    public User getUser(Integer i) {
+        User u = new User("u", "u");
+        u.setUserId(i);
+        return mUserRepository.getUser(u);
+    }
+
     //Can be used to update user
     public void insertUser(User user) {
         mUserRepository.insert(user);

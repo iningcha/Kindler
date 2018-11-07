@@ -1,8 +1,10 @@
 package com.example.kindler;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -11,12 +13,24 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Database.UserViewModel;
+import Database.MatchRepository;
+import Database.User;
+
 
 public class Match extends AppCompatActivity {
 
-    String[] bookIDs = {"Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"};
+    private UserViewModel mUserViewModel;
+    private List<Database.Match> mMatchList;
+    private MatchRepository mMatchRepository;
+    private List<String> bookTitles;
+    private List<String> userNames;
 
-    String[] userId = {"User1", "User2", "User3", "User4", "User5", "User6"};
+//    String[] bookIDs = {"Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"};
+//    String[] userId = {"User1", "User2", "User3", "User4", "User5", "User6"};
 
     int[] images = new int[6];
 
@@ -27,6 +41,16 @@ public class Match extends AppCompatActivity {
         setContentView(R.layout.activity_match);
 
         final ListView matchList = findViewById(R.id.matchList);
+
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
+        mMatchList = mUserViewModel.getMatchByOwner(mUserViewModel.getCurrUser().getValue().getUserId()).getValue();
+
+
+        for(Database.Match m: mMatchList) {
+            bookTitles.add(mUserViewModel.getBook(m.getMatchBookId()).getBookName());
+            userNames.add(mUserViewModel.getUser(m.getMatchWisher()).getUsername());
+        }
 
         images[0] = R.drawable.harry;
         images[1] = R.drawable.wrinkle;
@@ -46,15 +70,15 @@ public class Match extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?>adapter,View v, int position, long id){
 
-                Intent intent = new Intent(Match.this, MatchDetail.class);
-                String matchUser = userId[position];
-                String bookName = bookIDs[position];
-                int imageName = images[position];
-                intent.putExtra("matchUser", matchUser);
-                intent.putExtra("bookName", bookName);
-                intent.putExtra("image", imageName);
+            Intent intent = new Intent(Match.this, MatchDetail.class);
+            String matchUser = userNames.get(position);
+            String bookName = bookTitles.get(position);
+            int imageName = images[position];
+            intent.putExtra("matchUser", matchUser);
+            intent.putExtra("bookName", bookName);
+            intent.putExtra("image", imageName);
 
-                startActivity(intent);
+            startActivity(intent);
 
             }
 
@@ -63,14 +87,14 @@ public class Match extends AppCompatActivity {
     }
 
     public int getMatchListSize(){
-        return bookIDs.length;
+        return bookTitles.size();
     }
 
     class CustomAdapter extends BaseAdapter{
 
         @Override
         public int getCount(){
-            return userId.length;
+            return bookTitles.size();
         }
 
         @Override
@@ -91,8 +115,8 @@ public class Match extends AppCompatActivity {
             TextView matchBookTitle = view.findViewById(R.id.matchBookTitle);
 
             matchImage.setImageResource(images[i]);
-            matchUserId.setText(userId[i]);
-            matchBookTitle.setText(bookIDs[i]);
+            matchUserId.setText(userNames.get(i));
+            matchBookTitle.setText(bookTitles.get(i));
 
             return view;
         }
