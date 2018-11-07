@@ -1,4 +1,4 @@
-package com.example.kindler.util;
+package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
@@ -14,7 +14,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kindler.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

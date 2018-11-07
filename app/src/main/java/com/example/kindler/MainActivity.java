@@ -19,7 +19,6 @@ import android.widget.ProgressBar;
 
 import com.example.kindler.adapters.BookCardAdapter;
 import com.example.kindler.models.Book;
-import com.example.kindler.util.WishListActivity;
 import com.yuyakaido.android.cardstackview.CardStackView;
 import com.yuyakaido.android.cardstackview.SwipeDirection;
 
