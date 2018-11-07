@@ -26,9 +26,9 @@ public class MatchUITest {
     public void testUIFunction(){
         onView(withId(R.id.matchList)).check(matches(isDisplayed()));
         onData(anything()).inAdapterView(withId(R.id.matchList)).atPosition(0).
-                onChildView(withId(R.id.matchImage)).check(matches(isDisplayed()));
+                onChildView(withId(R.id.searchMatchImage)).check(matches(isDisplayed()));
         onData(anything()).inAdapterView(withId(R.id.matchList)).atPosition(0).
-                onChildView(withId(R.id.matchUserId)).check(matches(isDisplayed()));
+                onChildView(withId(R.id.searchMatchUserId)).check(matches(isDisplayed()));
         onData(anything()).inAdapterView(withId(R.id.matchList)).atPosition(0).
                 onChildView(withId(R.id.matchBookTitle)).check(matches(isDisplayed()));
 

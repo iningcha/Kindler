@@ -134,6 +134,10 @@ public class UserViewModel extends AndroidViewModel{
     }
 
     //Book
+    public void insertBook(Book b) {
+        mBookRepository.insert(b);
+    }
+
     public Book getBook(Integer i) {
         Book b = new Book("b", "b");
         b.setBookId(i);
