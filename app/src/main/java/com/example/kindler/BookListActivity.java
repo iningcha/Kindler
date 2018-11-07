@@ -130,9 +130,9 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
 
-        Log.d("BookListActivityLog", "Wish List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
+        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
         for (int i : mUserViewModel.getOwnedlist()) {
-            Log.d("BookListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
+            Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
             books.add(mUserViewModel.getBook(i));
         }
 
