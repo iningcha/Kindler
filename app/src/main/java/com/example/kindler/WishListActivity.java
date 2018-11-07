@@ -30,7 +30,7 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_list);
+        setContentView(R.layout.activity_wish_list);
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         books = LoadBooks();
