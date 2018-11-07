@@ -1,4 +1,4 @@
-package com.example.kindler;
+package com.example.kindler.util;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kindler.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,15 +23,16 @@ import java.util.List;
 import Database.Book;
 import Database.UserViewModel;
 
-public class BookListActivity extends AppCompatActivity implements View.OnClickListener{
+
+public class WishListActivity extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout bookshelf;
-    private static List<Book> books;
+    private List<Book> books;
     private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_list);
+        setContentView(R.layout.activity_wish_list);
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         books = LoadBooks();
@@ -43,10 +45,8 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
 
         //add books to scroll bar
         for (int i = 0; i < books.size(); i++) {
-            Log.d("BookListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
-
             //create horizontal linear layout to hold book and remove button
-            LinearLayout bookView = new LinearLayout(BookListActivity.this);
+            LinearLayout bookView = new LinearLayout(WishListActivity.this);
             bookView.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -54,24 +54,24 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
             bookView.setGravity(Gravity.CENTER);
 
             //create book view
-            LinearLayout bookArea = new LinearLayout(BookListActivity.this);
+            LinearLayout bookArea = new LinearLayout(WishListActivity.this);
             bookArea.setOrientation(LinearLayout.VERTICAL);
-            bookArea.setPadding(16,0,16,0);
-            bookArea.setLayoutParams( new LinearLayout.LayoutParams(
+            bookArea.setPadding(16, 0, 16, 0);
+            bookArea.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     1.0f));
 
             //create text view for book title
-            TextView bookTitle = new TextView(BookListActivity.this);
+            TextView bookTitle = new TextView(WishListActivity.this);
             bookTitle.setText(books.get(i).getBookName());
             bookTitle.setTextSize(30);
 
             //create Image view for book picture
-            ImageView bookImage = new ImageView( BookListActivity.this);
+            ImageView bookImage = new ImageView(WishListActivity.this);
             int maxHeight = 300;
             int maxWidth = 200;
-            bookImage.setBackgroundColor(Color.WHITE);
+            bookImage.setBackgroundColor(Color.BLUE);
             bookImage.setMaxHeight(maxHeight);
             bookImage.setMinimumHeight(maxHeight);
             bookImage.setMinimumWidth(maxWidth);
@@ -83,10 +83,10 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
             bookArea.addView(bookImage);
 
             //create button
-            Button button = new Button(BookListActivity.this);
+            Button button = new Button(WishListActivity.this);
             button.setText("Remove");
             button.setTag(i);
-            button.setOnClickListener(BookListActivity.this);
+            button.setOnClickListener(WishListActivity.this);
 
             //add book area and button to bookView
             bookView.addView(bookArea);
@@ -102,37 +102,30 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
 
     //onclick listener for for button
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         //get button tag
         int pos = (int) v.getTag();
 
         //store book name for message
-        Log.d("BookListActivityLog", "Remove Wish List at : " + Integer.toString(pos));
-        String name = books.get(pos).getBookName();
-        int bid = books.get(pos).getBookId();
-        Log.d("BookListActivityLog", "Remove Book Id: " + Integer.toString(bid));
+        String name = books.get(mUserViewModel.getWishlist().get(pos)).getBookName();
 
         //remove book at ownedBooks[pos]
-        mUserViewModel.removeOwnedList(bid);
+        mUserViewModel.removeWishList(pos);
 
         //remove book associated with button
-        bookshelf.removeView((View)v.getParent());
+        bookshelf.removeView((View) v.getParent());
 
         //display message to user
         String message = "Removed : " + name;
-        Toast.makeText(getApplicationContext(), message , Toast.LENGTH_SHORT ).show();
-        books = LoadBooks();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     //load book pictures
-    protected ArrayList<Book> LoadBooks()
-    {
+    protected ArrayList<Book> LoadBooks() {
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
-
-        Log.d("BookListActivityLog", "Wish List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
+        Log.d("WishListActivity", Integer.toString(mUserViewModel.getWishlist().size()));
         for (int i : mUserViewModel.getWishlist()) {
-            Log.d("BookListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
             books.add(mUserViewModel.getBook(i));
         }
 
