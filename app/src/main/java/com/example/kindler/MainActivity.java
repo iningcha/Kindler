@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.kindler.adapters.BookCardAdapter;
 import com.example.kindler.models.Book;
@@ -25,11 +27,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import Database.UserViewModel;
+
 public class MainActivity extends AppCompatActivity {
+    private UserViewModel mUserViewModel;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         setContentView(R.layout.activity_main);
         setup();
         reload();
@@ -60,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_booklist:
                 Intent intentbooklist = new Intent(this, BookListActivity.class);
                 this.startActivity(intentbooklist);
+                break;
+            case R.id.menu_wishlist:
+                Intent intentwishlist = new Intent(this,WishListActivity.class);
+                this.startActivity(intentwishlist);
                 break;
             case R.id.menu_matches:
                 Intent intentmatches = new Intent(this, Match.class);
@@ -115,6 +126,14 @@ public class MainActivity extends AppCompatActivity {
             public void onCardSwiped(SwipeDirection direction) {
                 Log.d("CardStackView", "onCardSwiped: " + direction.toString());
                 Log.d("CardStackView", "topIndex: " + cardStackView.getTopIndex());
+                if (direction.toString() == "Right") {
+                    int uid = mUserViewModel.getCurrUserId();
+                    mUserViewModel.addWishList(cardStackView.getTopIndex());
+                    mUserViewModel.addWishUser(cardStackView.getTopIndex(), uid);
+                    Toast.makeText(getApplicationContext(), "Added book to Wishlist!" , Toast.LENGTH_SHORT ).show();
+                    Log.d("MainActivityLog", "Add book to WishList " + Integer.toString(cardStackView.getTopIndex()));
+                }
+
                 if (cardStackView.getTopIndex() == adapter.getCount() - 5) {
                     Log.d("CardStackView", "Paginate: " + cardStackView.getTopIndex());
                     paginate();
@@ -233,7 +252,10 @@ public class MainActivity extends AppCompatActivity {
         overlayAnimator.setDuration(200);
         AnimatorSet overlayAnimationSet = new AnimatorSet();
         overlayAnimationSet.playTogether(overlayAnimator);
-
+        count++;
+        if (count == spots.size()) {
+            count = 0;
+        }
         cardStackView.swipe(SwipeDirection.Left, cardAnimationSet, overlayAnimationSet);
     }
 
@@ -268,7 +290,4 @@ public class MainActivity extends AppCompatActivity {
         cardStackView.swipe(SwipeDirection.Right, cardAnimationSet, overlayAnimationSet);
     }
 
-    private void reverse() {
-        cardStackView.reverse();
-    }
 }

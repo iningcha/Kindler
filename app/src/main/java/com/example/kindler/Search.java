@@ -1,5 +1,6 @@
 package com.example.kindler;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,8 +34,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import Database.Book;
+import Database.UserViewModel;
+
 public class Search extends AppCompatActivity implements View.OnClickListener {
 
+    private UserViewModel mUserViewModel;
     EditText _mSearch;
     Button _mButton;
     ListView _mSearchResultList;
@@ -44,6 +49,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         this._mSearch = findViewById(R.id.searchText);
         this._mButton = findViewById(R.id.searchButton);
@@ -66,7 +72,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 
     public String getRequestUrl(String query) {
         try {
-            return "https://www.googleapis.com/books/v1/volumes?q=" + URLEncoder.encode(query, StandardCharsets.UTF_8.toString());
+            return "https://www.googleapis.com/books/v1/volumes?q=" + URLEncoder.encode(query, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             System.out.println("Couldn't encode URL");
         }
@@ -138,7 +144,7 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         return books;
     }
 
-    class SearchListAdapter extends ArrayAdapter<BookItem> {
+    class SearchListAdapter extends ArrayAdapter<BookItem> implements View.OnClickListener {
         public SearchListAdapter(Context context, int resource, List<BookItem> objects) {
             super(context, resource, objects);
         }
@@ -149,14 +155,16 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
             final BookItem book = getItem(position);
 
             if(convertView == null) {
-                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.customlist, parent, false);
+                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.search_list_item, parent, false);
             }
 
-            ImageView matchImage = convertView.findViewById(R.id.matchImage);
-            TextView matchUserId = convertView.findViewById(R.id.matchUserId);
-            TextView matchBookTitle = convertView.findViewById(R.id.matchBookTitle);
+            ImageView matchImage = convertView.findViewById(R.id.searchMatchImage);
+            TextView matchUserId = convertView.findViewById(R.id.searchMatchUserId);
+            TextView matchBookTitle = convertView.findViewById(R.id.searchMatchBookTitle);
+            Button addBookListButton = convertView.findViewById(R.id.searchAddBookListButton);
+            Button addWishListButton = convertView.findViewById(R.id.searchAddWishListButton);
 
-            if (book.imageLink != null) {
+            if (book.imageLink != null && !book.imageLink.equals("")) {
                 Picasso.with(getContext()).load(book.imageLink).into(matchImage, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -165,7 +173,6 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
 
                     @Override
                     public void onError() {
-
                         System.out.println("Could not load " + book.imageLink);
                     }
                 });
@@ -174,7 +181,41 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
             matchUserId.setText(book.title);
             matchBookTitle.setText(book.getAuthorsString());
 
+            SearchListButtonHandler buttonHandler = new SearchListButtonHandler(book);
+
+            addBookListButton.setOnClickListener(buttonHandler);
+            addWishListButton.setOnClickListener(buttonHandler);
+
             return convertView;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
+
+    class SearchListButtonHandler implements View.OnClickListener {
+        private BookItem mBook;
+        public SearchListButtonHandler(BookItem b) {
+            mBook = b;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Book b = new Book(mBook.title, mBook.imageLink);
+            b.setBookId(mBook.id.hashCode());
+
+            switch (v.getId()) {
+                case R.id.searchAddBookListButton:
+                    mUserViewModel.insertBook(b);
+                    mUserViewModel.addOwnedList(b.getBookId());
+                    break;
+                case R.id.searchAddWishListButton:
+                    mUserViewModel.insertBook(b);
+                    mUserViewModel.addWishList(b.getBookId());
+                    break;
+            }
         }
     }
 }

@@ -91,6 +91,10 @@ public class UserViewModel extends AndroidViewModel{
         User u = new User("u", "u");
         u.setUserId(i);
         return mUserRepository.getUser(u);
+
+    public int getCurrUserId() {
+        User u = new User(mCurrUsername, "pw");
+        return mUserRepository.getUser(u).getUserId();
     }
 
     //Can be used to update user
@@ -103,6 +107,7 @@ public class UserViewModel extends AndroidViewModel{
         User u = mUserRepository.getUser(temp);
         u.addWishList(i);
         mUserRepository.insert(u);
+        Log.d("UserViewModelLog", "add wish list");
     }
 
     public void addOwnedList(Integer i) {
@@ -112,6 +117,7 @@ public class UserViewModel extends AndroidViewModel{
         mUserRepository.insert(u);
     }
 
+    //Remove book from wishlist for current user
     public void removeWishList(Integer i) {
         User temp = new User(mCurrUsername, "pw");
         User u = mUserRepository.getUser(temp);
@@ -134,6 +140,10 @@ public class UserViewModel extends AndroidViewModel{
     }
 
     //Book
+    public void insertBook(Book b) {
+        mBookRepository.insert(b);
+    }
+
     public Book getBook(Integer i) {
         Book b = new Book("b", "b");
         b.setBookId(i);

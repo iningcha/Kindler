@@ -73,13 +73,6 @@ public abstract class UserRoomDatabase extends RoomDatabase {
             // Not needed if you only populate on creation.
             //mDao.deleteAll();
 
-            User User = new User("a@a.a", "aaaa");
-            ArrayList<Integer> a = new ArrayList<> ();
-            a.add(0);
-            a.add(1);
-            User.setWishList(a);
-            User.setOwnedList(a);
-            mDao.insert(User);
             /*
             User = new User("b@b.b", "bbbb");
             mDao.insert(User);

@@ -10,3 +10,9 @@ Instructions on running the app in Android Studio:
 2. Open project folder in Android Studio
 3. Press the green build button to build project
 4. Press the green run button and select desired device or emulator to run project
+
+Project 2.5 Sprint #1, improvements from Project 2.3 implementation 
+1. Connected Main, Book list, and Wish list activities to the Database
+2. Enabled adding to Book list and Wish list from Search
+3. Improved User Interface on Book list and wish list
+4. Enabled editing profile and updating username, biography, and profile picture

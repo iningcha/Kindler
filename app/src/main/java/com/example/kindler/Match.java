@@ -110,8 +110,8 @@ public class Match extends AppCompatActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup){
             view = getLayoutInflater().inflate(R.layout.customlist, null);
-            ImageView matchImage = view.findViewById(R.id.matchImage);
-            TextView matchUserId = view.findViewById(R.id.matchUserId);
+            ImageView matchImage = view.findViewById(R.id.searchMatchImage);
+            TextView matchUserId = view.findViewById(R.id.searchMatchUserId);
             TextView matchBookTitle = view.findViewById(R.id.matchBookTitle);
 
             matchImage.setImageResource(images[i]);
