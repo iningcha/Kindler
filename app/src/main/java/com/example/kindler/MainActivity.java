@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.kindler.adapters.BookCardAdapter;
 import com.example.kindler.models.Book;
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     int uid = mUserViewModel.getCurrUserId();
                     mUserViewModel.addWishList(cardStackView.getTopIndex());
                     mUserViewModel.addWishUser(cardStackView.getTopIndex(), uid);
+                    Toast.makeText(getApplicationContext(), "Added book to Wishlist!" , Toast.LENGTH_SHORT ).show();
                     Log.d("MainActivityLog", "Add book to WishList " + Integer.toString(cardStackView.getTopIndex()));
                 }
 

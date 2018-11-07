@@ -22,16 +22,15 @@ import java.util.List;
 import Database.Book;
 import Database.UserViewModel;
 
-
-public class WishListActivity extends AppCompatActivity implements View.OnClickListener {
+public class WishListActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout bookshelf;
-    private List<Book> books;
+    private static List<Book> books;
     private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wish_list);
+        setContentView(R.layout.activity_book_list);
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
         books = LoadBooks();
@@ -44,6 +43,8 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
 
         //add books to scroll bar
         for (int i = 0; i < books.size(); i++) {
+            Log.d("WishListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
+
             //create horizontal linear layout to hold book and remove button
             LinearLayout bookView = new LinearLayout(WishListActivity.this);
             bookView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -55,8 +56,8 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
             //create book view
             LinearLayout bookArea = new LinearLayout(WishListActivity.this);
             bookArea.setOrientation(LinearLayout.VERTICAL);
-            bookArea.setPadding(16, 0, 16, 0);
-            bookArea.setLayoutParams(new LinearLayout.LayoutParams(
+            bookArea.setPadding(16,0,16,0);
+            bookArea.setLayoutParams( new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     1.0f));
@@ -67,10 +68,10 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
             bookTitle.setTextSize(30);
 
             //create Image view for book picture
-            ImageView bookImage = new ImageView(WishListActivity.this);
+            ImageView bookImage = new ImageView( WishListActivity.this);
             int maxHeight = 300;
             int maxWidth = 200;
-            bookImage.setBackgroundColor(Color.BLUE);
+            bookImage.setBackgroundColor(Color.WHITE);
             bookImage.setMaxHeight(maxHeight);
             bookImage.setMinimumHeight(maxHeight);
             bookImage.setMinimumWidth(maxWidth);
@@ -101,30 +102,37 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
 
     //onclick listener for for button
     @Override
-    public void onClick(View v) {
+    public void onClick(View v){
         //get button tag
         int pos = (int) v.getTag();
 
         //store book name for message
-        String name = books.get(mUserViewModel.getWishlist().get(pos)).getBookName();
+        Log.d("WishListActivityLog", "Remove Wish List at : " + Integer.toString(pos));
+        String name = books.get(pos).getBookName();
+        int bid = books.get(pos).getBookId();
+        Log.d("WishListActivityLog", "Remove Book Id: " + Integer.toString(bid));
 
         //remove book at ownedBooks[pos]
-        mUserViewModel.removeWishList(pos);
+        mUserViewModel.removeOwnedList(bid);
 
         //remove book associated with button
-        bookshelf.removeView((View) v.getParent());
+        bookshelf.removeView((View)v.getParent());
 
         //display message to user
         String message = "Removed : " + name;
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message , Toast.LENGTH_SHORT ).show();
+        books = LoadBooks();
     }
 
     //load book pictures
-    protected ArrayList<Book> LoadBooks() {
+    protected ArrayList<Book> LoadBooks()
+    {
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
-        Log.d("WishListActivity", Integer.toString(mUserViewModel.getWishlist().size()));
+
+        Log.d("WishListActivityLog", "Wish List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
         for (int i : mUserViewModel.getWishlist()) {
+            Log.d("WishListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
             books.add(mUserViewModel.getBook(i));
         }
 

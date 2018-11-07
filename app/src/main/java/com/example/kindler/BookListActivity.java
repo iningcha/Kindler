@@ -107,7 +107,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         int pos = (int) v.getTag();
 
         //store book name for message
-        Log.d("BookListActivityLog", "Remove Wish List at : " + Integer.toString(pos));
+        Log.d("BookListActivityLog", "Remove Owned List at : " + Integer.toString(pos));
         String name = books.get(pos).getBookName();
         int bid = books.get(pos).getBookId();
         Log.d("BookListActivityLog", "Remove Book Id: " + Integer.toString(bid));
@@ -130,8 +130,8 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
 
-        Log.d("BookListActivityLog", "Wish List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
-        for (int i : mUserViewModel.getWishlist()) {
+        Log.d("BookListActivityLog", "Wish List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
+        for (int i : mUserViewModel.getOwnedlist()) {
             Log.d("BookListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
             books.add(mUserViewModel.getBook(i));
         }
