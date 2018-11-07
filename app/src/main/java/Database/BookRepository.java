@@ -37,9 +37,9 @@ public class BookRepository {
         @Override
         protected Book doInBackground(final Book... params) {
             List<Book> list = mAsyncTaskDao.getBook(params[0].getBookId());
-            Log.d("BookRepo", Integer.toString(params[0].getBookId()));
+            Log.d("BookRepoLog", Integer.toString(params[0].getBookId()));
             if (list.size() == 0) {
-                Log.d("BookRepo", "bad query");
+                Log.d("BookRepoLog", "bad query");
                 Book b = new Book("no", "pic");
                 return b;
             }
