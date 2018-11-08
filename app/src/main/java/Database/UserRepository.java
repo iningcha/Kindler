@@ -54,13 +54,47 @@ public class UserRepository {
         @Override
         protected User doInBackground(final User... params) {
 
-            User u = mAsyncTaskDao.getUser(params[0].getUserId());
-
-            if (u == null) {
+            List<User> list = mAsyncTaskDao.auth(params[0].getUsername());
+            if (list.size() == 0) {
                 Log.d("UserRepo", "bad query");
-                u = new User("no", "pw");
+                User u = new User("no", "pw");
+                return u;
             }
-            return u;
+            return list.get(0);
+        }
+    }
+
+    User getUserById(User u) {
+        getUserByIdAsyncTask guat = new getUserByIdAsyncTask(mUserDao);
+        guat.execute(u);
+        User res = new User("no", "pw");
+        try {
+            res = guat.get();
+            Log.d("UserRepo", res.getUsername());
+            Log.d("UserRepo", Integer.toString(res.getWishList().size()));
+        } catch (Exception e) {
+
+        }
+        return res;
+    }
+
+    private static class getUserByIdAsyncTask extends AsyncTask<User, Void, User> {
+        private UserDao mAsyncTaskDao;
+
+        getUserByIdAsyncTask(UserDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected User doInBackground(final User... params) {
+
+            List<User> list = mAsyncTaskDao.getUserById(params[0].getUserId());
+            if (list.size() == 0) {
+                Log.d("UserRepo", "bad query");
+                User u = new User("no", "pw");
+                return u;
+            }
+            return list.get(0);
         }
     }
 
@@ -145,7 +179,7 @@ public class UserRepository {
     }
 
     // You must call this on a non-UI thread or your app will crash.
-    // Like this, Room ensures that you're not doinget any long running operations on the main
+    // Like this, Room ensures that you're not doing any long running operations on the main
     // thread, blocking the UI.
     void insert(User user) {
         insertAsyncTask iat = new insertAsyncTask(mUserDao);

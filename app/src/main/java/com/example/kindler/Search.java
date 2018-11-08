@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -205,15 +206,20 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         public void onClick(View v) {
             Book b = new Book(mBook.title, mBook.imageLink);
             b.setBookId(mBook.id.hashCode());
+            int uid = mUserViewModel.getCurrUserId();
 
             switch (v.getId()) {
                 case R.id.searchAddBookListButton:
                     mUserViewModel.insertBook(b);
                     mUserViewModel.addOwnedList(b.getBookId());
+                    mUserViewModel.addOwnedUser(b.getBookId(), uid);
+                    Toast.makeText(getApplicationContext(), "Added book to Book List!" , Toast.LENGTH_SHORT ).show();
                     break;
                 case R.id.searchAddWishListButton:
                     mUserViewModel.insertBook(b);
                     mUserViewModel.addWishList(b.getBookId());
+                    mUserViewModel.addWishUser(b.getBookId(), uid);
+                    Toast.makeText(getApplicationContext(), "Added book to Wish List!" , Toast.LENGTH_SHORT ).show();
                     break;
             }
         }
