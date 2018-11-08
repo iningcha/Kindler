@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".Profile" />
+        <activity android:name=".Profile" android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".MatchDetail"
             android:parentActivityName=".Match" />

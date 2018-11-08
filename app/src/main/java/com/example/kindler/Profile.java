@@ -1,6 +1,7 @@
 package com.example.kindler;
 
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +17,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.Toast;
+import Database.UserViewModel;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener{
 
@@ -24,24 +28,15 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
     private TextView biography;
     Bitmap bitmap;
     EditText edtBio,edtName;
+    private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         init();
         listeners();
-
-//        UserViewModel mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-//
-//        mUserViewModel.getCurrUser().observe(this, new Observer<User>() {
-//            @Override
-//            public void onChanged(@Nullable User user) {
-//                name.setText(user.getProfile().getProfileName());
-//            }
-//        });
-
     }
 
     public void init(){
@@ -51,7 +46,9 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         biography = findViewById(R.id.biography);
         edtBio= findViewById(R.id.edtBiography);
         edtName=findViewById(R.id.edtName);
-
+        Database.Profile p = mUserViewModel.getCurrProfile();
+        edtName.setHint(p.getProfileName());
+        edtBio.setHint(p.getProfileBiography());
         profilePicture.setImageResource(R.drawable.test);
         name.setText("Samantha Chang");
         biography.setText("Student studying CS at USC");
@@ -59,9 +56,15 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void listeners(){
-
         profilePicture.setOnClickListener(this);
+    }
 
+    public void onClickSave(View view) {
+        Database.Profile p = mUserViewModel.getCurrProfile();
+        p.setProfileName(edtName.getText().toString());
+        p.setProfileBiography(edtBio.getText().toString());
+        mUserViewModel.setProfile(p);
+        Toast.makeText(this, "Saved Profile", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -71,11 +74,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
             case R.id.profilePicture:
                 CameraDialog cameraDialog=new CameraDialog(Profile.this);
                 cameraDialog.show();
-
-
-
                 break;
-
             default:
                 break;
 
