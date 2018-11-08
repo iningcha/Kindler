@@ -16,3 +16,4 @@ Project 2.5 Sprint #1, improvements from Project 2.3 implementation
 2. Enabled adding to Book list and Wish list from Search
 3. Improved User Interface on Book list and wish list
 4. Enabled editing profile and updating username, biography, and profile picture
+5. Added Facebook SSO to the login page
