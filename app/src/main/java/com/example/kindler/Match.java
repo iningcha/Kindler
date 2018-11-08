@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.view.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import Database.UserViewModel;
@@ -27,13 +28,12 @@ public class Match extends AppCompatActivity {
     private UserViewModel mUserViewModel;
     private List<Integer> mMatchList;
     private MatchRepository mMatchRepository;
-    private List<String> bookTitles;
-    private List<String> userNames;
-
-//    String[] bookTitles = {"Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"};
-//    String[] userNames = {"User1", "User2", "User3", "User4", "User5", "User6"};
+//    private ArrayList<String> bookTitles;
+//    private ArrayList<String> userNames;
 
     int[] images = new int[6];
+    private ArrayList<String> bookTitles = new ArrayList<>(Arrays.asList("Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"));
+    private ArrayList<String> userNames = new ArrayList<>(Arrays.asList("User1", "User2", "User3", "User4", "User5", "User6"));
 
 
     @Override
