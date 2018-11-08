@@ -1,6 +1,7 @@
 package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Database;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -24,13 +25,13 @@ import Database.User;
 public class Match extends AppCompatActivity {
 
     private UserViewModel mUserViewModel;
-    private List<Database.Match> mMatchList;
+    private List<Integer> mMatchList;
     private MatchRepository mMatchRepository;
     private List<String> bookTitles;
     private List<String> userNames;
 
-//    String[] bookIDs = {"Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"};
-//    String[] userId = {"User1", "User2", "User3", "User4", "User5", "User6"};
+//    String[] bookTitles = {"Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"};
+//    String[] userNames = {"User1", "User2", "User3", "User4", "User5", "User6"};
 
     int[] images = new int[6];
 
@@ -44,12 +45,13 @@ public class Match extends AppCompatActivity {
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        mMatchList = mUserViewModel.getMatchByOwner(mUserViewModel.getCurrUser().getValue().getUserId()).getValue();
+        mMatchList = mUserViewModel.getMatches();
 
+        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mMatchList.size()));
 
-        for(Database.Match m: mMatchList) {
-            bookTitles.add(mUserViewModel.getBook(m.getMatchBookId()).getBookName());
-            userNames.add(mUserViewModel.getUserById(m.getMatchWisher()).getUsername());
+        for(int m: mMatchList) {
+            bookTitles.add(mUserViewModel.getBook(mUserViewModel.getMatchById(m).getMatchBookId()).getBookName());
+            userNames.add(mUserViewModel.getUserById(mUserViewModel.getMatchById(m).getMatchWisher()).getUsername());
         }
 
         images[0] = R.drawable.harry;

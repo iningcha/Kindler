@@ -178,6 +178,12 @@ public class UserViewModel extends AndroidViewModel{
         return mMatchRepository.getMatchByWisher(uid);
     }
 
+    public Match getMatchById(int mid) {
+        Match m  = new Match();
+        m.setMatchId(mid);
+        return mMatchRepository.getMatchById(m);
+    }
+
     public void updateMatchStatus(int mid) {
         mMatchRepository.updateStatus(mid);
     }

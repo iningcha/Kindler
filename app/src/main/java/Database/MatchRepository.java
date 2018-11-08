@@ -3,6 +3,7 @@ package Database;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
 
@@ -20,6 +21,19 @@ public class MatchRepository {
 
     LiveData<List<Match>> getMatchByWisher(Integer uid) {
         return mMatchDao.getMatchByWisher(uid);
+    }
+
+    Match getMatchById(Match m){
+        MatchRepository.getMatchByIdAsyncTask guat = new MatchRepository.getMatchByIdAsyncTask(mMatchDao);
+        guat.execute(m);
+        Match res = new Match();
+        try{
+            res = guat.get();
+
+        } catch(Exception e) {
+
+        }
+        return res;
     }
 
     // You must call this on a non-UI thread or your app will crash.
@@ -49,4 +63,17 @@ public class MatchRepository {
             return null;
         }
     }
+
+    private static class getMatchByIdAsyncTask extends AsyncTask<Match, Void, Match> {
+        private MatchDao mAsyncTaskDao;
+
+        getMatchByIdAsyncTask(MatchDao dao) { mAsyncTaskDao = dao; }
+
+        @Override
+        protected Match doInBackground(final Match... params) {
+
+            return mAsyncTaskDao.getMatchById(params[0].getMatchId());
+        }
+    }
+
 }
