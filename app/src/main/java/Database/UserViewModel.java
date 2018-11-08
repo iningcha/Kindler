@@ -109,6 +109,14 @@ public class UserViewModel extends AndroidViewModel{
         mUserRepository.insert(user);
     }
 
+    public void setProfile(Profile p) {
+        User temp = new User(mCurrUsername, "pw");
+        User u = mUserRepository.getUser(temp);
+        u.setProfile(p);
+        mUserRepository.insert(u);
+        Log.d("UserViewModelLog", "set profile");
+    }
+
     public void addWishList(Integer i) {
         User temp = new User(mCurrUsername, "pw");
         User u = mUserRepository.getUser(temp);

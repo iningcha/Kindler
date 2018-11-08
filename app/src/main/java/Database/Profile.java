@@ -13,8 +13,8 @@ public class Profile {
     public String mProfilePicture;
 
     Profile() {
-        this.mProfileName = "anon";
-        this.mProfileBiography = "bio";
+        this.mProfileName = "Anonymous";
+        this.mProfileBiography = "Fill out something about yourself!";
         this.mProfilePicture = "pic";
     }
 

@@ -14,12 +14,12 @@
         android:layout_marginEnd="250dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:text="Profile"
+        android:text="My Profile"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/profilePicture"
@@ -34,6 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileTitle"
         app:srcCompat="@mipmap/ic_launcher_round" />
+
 
     <TextView
         android:id="@+id/nameLabel"
@@ -72,14 +73,15 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="35dp"
         android:id="@+id/edtName"
-        android:hint="Your Nane"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nameLabel"
         app:layout_constraintTop_toBottomOf="@+id/profilePicture"
         android:layout_width="100dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLines="1"/>
 
     <TextView
         android:visibility="gone"
@@ -126,10 +128,21 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:background="@drawable/border_style"
-        android:hint="Tell me something about yourself"
+        android:hint="Fill out something about yourself"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bioLabel" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClickSave"
+        android:text="Save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtBiography"/>
+
 
 </android.support.constraint.ConstraintLayout>
