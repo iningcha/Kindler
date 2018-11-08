@@ -88,9 +88,8 @@ public class UserViewModel extends AndroidViewModel{
 
     //Get User by username
     public User getUser(String un) {
-        User u = new User("u", "u");
-        u.setUserId(i);
-        return mUserRepository.getUser(un);
+        User u = new User(un, "u");
+        return mUserRepository.getUser(u);
     }
 
     //Get User by userid

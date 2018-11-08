@@ -49,7 +49,7 @@ public class Match extends AppCompatActivity {
 
         for(Database.Match m: mMatchList) {
             bookTitles.add(mUserViewModel.getBook(m.getMatchBookId()).getBookName());
-            userNames.add(mUserViewModel.getUser(m.getMatchWisher()).getUsername());
+            userNames.add(mUserViewModel.getUserById(m.getMatchWisher()).getUsername());
         }
 
         images[0] = R.drawable.harry;
