@@ -86,11 +86,18 @@ public class UserViewModel extends AndroidViewModel{
         return mUserRepository.getUser(u).getProfile();
     }
 
-    //User
-    public User getUser(Integer i) {
+    //Get User by username
+    public User getUser(String un) {
         User u = new User("u", "u");
         u.setUserId(i);
-        return mUserRepository.getUser(u);
+        return mUserRepository.getUser(un);
+    }
+
+    //Get User by userid
+    public User getUserById(Integer i) {
+        User u = new User("u", "u");
+        u.setUserId(i);
+        return mUserRepository.getUserById(u);
     }
 
     public int getCurrUserId() {
