@@ -36,7 +36,7 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
         books = LoadBooks();
 
         //create horizontal linear layout for books
-        ScrollView bookLayout = findViewById(R.id.bookDisplay);
+        ScrollView bookLayout = findViewById(R.id.bookWishDisplay);
         //bookshelf = findViewById(R.id.bookLayout);
         bookshelf = new LinearLayout(this);
         bookshelf.setOrientation(LinearLayout.VERTICAL);
@@ -107,7 +107,7 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
         int pos = (int) v.getTag();
 
         //store book name for message
-        Log.d("WishListActivityLog", "Remove Wish List at : " + Integer.toString(pos));
+        Log.d("WishListActivityLog", "Remove Owned List at : " + Integer.toString(pos));
         String name = books.get(pos).getBookName();
         int bid = books.get(pos).getBookId();
         Log.d("WishListActivityLog", "Remove Book Id: " + Integer.toString(bid));
@@ -130,10 +130,12 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
 
-        Log.d("WishListActivityLog", "Wish List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
+        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
         for (int i : mUserViewModel.getWishlist()) {
-            Log.d("WishListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
-            books.add(mUserViewModel.getBook(i));
+            Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
+            if (mUserViewModel.getBook(i) != null) {
+                books.add(mUserViewModel.getBook(i));
+            }
         }
 
         return books;

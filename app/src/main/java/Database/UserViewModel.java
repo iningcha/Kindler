@@ -68,7 +68,6 @@ public class UserViewModel extends AndroidViewModel{
     //Getters
     public List<Integer> getWishlist() {
         User u = new User(mCurrUsername, "pw");
-        Log.d("UserViewModel", mCurrUsername);
         return mUserRepository.getUser(u).getWishList();
     }
     public List<Integer> getOwnedlist() {

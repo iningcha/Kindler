@@ -36,7 +36,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         books = LoadBooks();
 
         //create horizontal linear layout for books
-        ScrollView bookLayout = findViewById(R.id.bookDisplay);
+        ScrollView bookLayout = findViewById(R.id.bookListDisplay);
         //bookshelf = findViewById(R.id.bookLayout);
         bookshelf = new LinearLayout(this);
         bookshelf.setOrientation(LinearLayout.VERTICAL);
@@ -133,7 +133,10 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
         for (int i : mUserViewModel.getOwnedlist()) {
             Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
-            books.add(mUserViewModel.getBook(i));
+
+            if (mUserViewModel.getBook(i) != null) {
+                books.add(mUserViewModel.getBook(i));
+            }
         }
 
         return books;

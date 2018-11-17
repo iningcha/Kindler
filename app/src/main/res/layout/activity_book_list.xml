@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/bookDisplay"
+        android:id="@+id/bookListDisplay"
         android:layout_width="291dp"
         android:layout_height="404dp"
         android:layout_marginTop="8dp"
