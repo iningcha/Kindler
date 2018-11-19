@@ -16,9 +16,6 @@ public class UserViewModel extends AndroidViewModel{
     // - We can put an observer on the data (instead of polling for changes) and only update the
     //   the UI when the data actually changes.
     // - Repository is completely separated from the UI through the ViewModel.
-    private LiveData<List<User>> mAllUsers;
-    private LiveData<User> mCurrUser;
-    private User mCurrUserOne;
     private static String mCurrUsername;
 
     public UserViewModel(Application application) {
@@ -26,20 +23,13 @@ public class UserViewModel extends AndroidViewModel{
         mUserRepository = new UserRepository(application);
         mBookRepository = new BookRepository(application);
         mMatchRepository = new MatchRepository(application);
-        mAllUsers = mUserRepository.getAllUsers();
     }
 
-    public LiveData<List<User>> getAllUsers() { return mAllUsers; }
-
-    public LiveData<User> getCurrUser() {
-        return mUserRepository.getCurrUser();
-    }
+    public List<User> getAllUser() { return mUserRepository.getAllUser(); }
 
     public boolean login(String username, String password) {
         User u = new User(username, password);
         if (mUserRepository.login(u)) {
-            mCurrUserOne = u;
-            mCurrUser = mUserRepository.getCurrUser();
             this.mCurrUsername = username;
             Log.d("UserViewModel", "set " + mCurrUsername);
             return true;
@@ -55,14 +45,8 @@ public class UserViewModel extends AndroidViewModel{
         }
         User user = new User(username, password);
         insertUser(user);
-        mCurrUserOne = user;
-        mCurrUser = mUserRepository.getCurrUser();
         mCurrUsername = username;
         return true;
-    }
-
-    public void logout () {
-        mCurrUser = null;
     }
 
     //Getters
@@ -177,6 +161,7 @@ public class UserViewModel extends AndroidViewModel{
     }
 
     //Match
+    /*
     public LiveData<List<Match>> getMatchByOwner(int uid) {
         return mMatchRepository.getMatchByOwner(uid);
     }
@@ -184,6 +169,7 @@ public class UserViewModel extends AndroidViewModel{
     public LiveData<List<Match>> getMatchByWisher(int uid) {
         return mMatchRepository.getMatchByWisher(uid);
     }
+    */
 
     public Match getMatchById(int mid) {
         Match m  = new Match();

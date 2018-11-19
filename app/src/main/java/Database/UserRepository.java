@@ -6,28 +6,40 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class UserRepository {
     private UserDao mUserDao;
-    private LiveData<List<User>> mAllUsers;
     private String mCurrUsername;
-    private LiveData<User> mCurrUser;
-
 
     UserRepository(Application application) {
         UserRoomDatabase db = UserRoomDatabase.getDatabase(application);
         mUserDao = db.UserDao();
-        mAllUsers = mUserDao.getAllUsers();
     }
 
-    // Room executes all queries on a separate thread.
-    // Observed LiveData will notify the observer when the data has changed.
-    LiveData<List<User>> getAllUsers() {
-        return mAllUsers;
+    List<User> getAllUser() {
+        getAllUserAsyncTask guat = new getAllUserAsyncTask(mUserDao);
+        guat.execute();
+        List<User> res = new ArrayList<>();
+        try {
+            res = guat.get();
+        } catch (Exception e) {
+
+        }
+        return res;
     }
 
-    LiveData<User> getCurrUser() {
-        return mCurrUser;
+    private static class getAllUserAsyncTask extends AsyncTask<Void, Void, List<User>> {
+        private UserDao mAsyncTaskDao;
+
+        getAllUserAsyncTask(UserDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<User> doInBackground(final Void... sth) {
+            return mAsyncTaskDao.getAllUser();
+        }
     }
 
     User getUser(User u) {
@@ -113,11 +125,6 @@ public class UserRepository {
 
         }
 
-        if (res) {
-            mCurrUsername = u.getUsername();
-            mCurrUser = mUserDao.getCurrUser(u.getUsername());
-            Log.d("userRepo", mCurrUsername);
-        }
         return res;
     }
 
@@ -150,11 +157,6 @@ public class UserRepository {
             res = aat.get();
         }catch(Exception e){
 
-        }
-
-        if (res) {
-            mCurrUsername = u.getUsername();
-            mCurrUser = mUserDao.getCurrUser(u.getUsername());
         }
 
         return res;
