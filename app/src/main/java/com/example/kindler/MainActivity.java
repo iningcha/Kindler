@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (cardStackView.getTopIndex() == adapter.getCount() - 5) {
                     Log.d("CardStackView", "Paginate: " + cardStackView.getTopIndex());
-                    paginate();
+                    //paginate();
                 }
             }
 

@@ -103,6 +103,11 @@ public class UserViewModel extends AndroidViewModel{
     public void addWishList(Integer i) {
         User temp = new User(mCurrUsername, "pw");
         User u = mUserRepository.getUser(temp);
+        for (int j=0; j<u.getWishList().size(); j++) {
+            if (u.getWishList().get(j) == i) {
+                return;
+            }
+        }
         u.addWishList(i);
         mUserRepository.insert(u);
         Log.d("UserViewModelLog", "add wish list");
@@ -111,6 +116,11 @@ public class UserViewModel extends AndroidViewModel{
     public void addOwnedList(Integer i) {
         User temp = new User(mCurrUsername, "pw");
         User u = mUserRepository.getUser(temp);
+        for (int j=0; j<u.getOwnedList().size(); j++) {
+            if (u.getWishList().get(j) == i) {
+                return;
+            }
+        }
         u.addOwnedList(i);
         mUserRepository.insert(u);
     }
