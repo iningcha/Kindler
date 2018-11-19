@@ -12,7 +12,7 @@
     <string name="search_query_placeholder">Enter a book title, author, or ISBN...</string>
     <string name="main_search">Search</string>
     <string name="discover">Discover</string>
-
+    <string name="logout">Log Out</string>
 
     <!--Facebook Related-->
     <string name="facebook_app_id">357506061660341</string>

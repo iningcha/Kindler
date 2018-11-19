@@ -124,15 +124,13 @@ public class SignupActivity extends AppCompatActivity {
 //        finish();
 
 
-        if (!databaseHelper.checkUserDetailModel(_emailText.getText().toString().trim())) {
+        if (mUserViewModel.register(_emailText.getText().toString().trim(), _passwordText.getText().toString().trim())) {
 
-            userDetailModel.setName(_nameText.getText().toString().trim());
-            userDetailModel.setEmail(_emailText.getText().toString().trim());
-            userDetailModel.setPassword(_passwordText.getText().toString().trim());
-
-            databaseHelper.addUserDetailModel(userDetailModel);
-
-            mUserViewModel.register(_emailText.getText().toString().trim(), _passwordText.getText().toString().trim()); //just register a new account in room
+//            userDetailModel.setName(_nameText.getText().toString().trim());
+//            userDetailModel.setEmail(_emailText.getText().toString().trim());
+//            userDetailModel.setPassword(_passwordText.getText().toString().trim());
+//
+//            databaseHelper.addUserDetailModel(userDetailModel);
             // Snack Bar to show success message that record saved successfully
 
             PreferencesService.instance().saveLogin_Status("true");

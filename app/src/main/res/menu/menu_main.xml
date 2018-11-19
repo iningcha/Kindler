@@ -19,4 +19,7 @@
     <item  android:id="@+id/menu_matches"
         android:title="@string/match"
         app:showAsAction="never"/>
+    <item  android:id="@+id/menu_logout"
+        android:title="@string/logout"
+        app:showAsAction="never"/>
 </menu>

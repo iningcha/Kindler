@@ -76,6 +76,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentmatches = new Intent(this, Match.class);
                 this.startActivity(intentmatches);
                 break;
+            case R.id.menu_logout:
+                Toast.makeText(getApplicationContext(), "Logged Out!" , Toast.LENGTH_SHORT ).show();
+                Intent intentlogout = new Intent(this, LoginActivity.class);
+                this.startActivity(intentlogout);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }

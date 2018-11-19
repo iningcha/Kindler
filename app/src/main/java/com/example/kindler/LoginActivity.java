@@ -180,11 +180,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
 //        finish();
-        if (databaseHelper.checkUserDetailModel(_emailText.getText().toString().trim()
-                , _passwordText.getText().toString().trim())) {
+        if (mUserViewModel.login(_emailText.getText().toString().trim(), _passwordText.getText().toString().trim())) {
 
             PreferencesService.instance().saveLogin_Status("true");
-            mUserViewModel.login(_emailText.getText().toString().trim(), _passwordText.getText().toString().trim()); //temporarily just register a new account
             finish();
             //   Toast.makeText(this, "Login Success", Toast.LENGTH_LONG).show();
         } else {
