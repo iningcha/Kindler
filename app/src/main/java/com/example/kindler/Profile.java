@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
+import Database.User;
 import Database.UserViewModel;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener{
@@ -44,14 +45,21 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         listeners();
     }
 
-    public void init(){
+    public void init() {
 
         profilePicture = findViewById(R.id.profilePicture);
         name = findViewById(R.id.name);
         biography = findViewById(R.id.biography);
-        edtBio= findViewById(R.id.edtBiography);
-        edtName=findViewById(R.id.edtName);
+        edtBio = findViewById(R.id.edtBiography);
+        edtName = findViewById(R.id.edtName);
         Database.Profile p = mUserViewModel.getCurrProfile();
+
+        String username = getIntent().getStringExtra("USER");
+        if (username != null && !username.equals("")) {
+            User u = mUserViewModel.getUser(username);
+            p = u.getProfile();
+        }
+
         edtName.setHint(p.getProfileName());
         edtBio.setHint(p.getProfileBiography());
 

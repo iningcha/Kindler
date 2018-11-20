@@ -2,6 +2,7 @@ package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -34,16 +35,12 @@ public class UserListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
 
-        System.out.println("SOMETHING 1");
         mUserRepository = ViewModelProviders.of(this).get(UserRepository.class);
-        System.out.println("SOMETHING 2");
         mUserList = mUserRepository.getAllUser();
-        System.out.println("SOMETHING 3");
 
         mUserListView = findViewById(R.id.usersListView);
         mUserListAdapter = new UserListAdapter(this, R.layout.customlist, new ArrayList<User>());
         mUserListView.setAdapter(mUserListAdapter);
-        System.out.println("SOMETHING 4");
 
         mUserListAdapter.clear();
         mUserListAdapter.addAll(mUserList);
@@ -87,6 +84,15 @@ public class UserListActivity extends AppCompatActivity {
 
             button1.setVisibility(View.INVISIBLE);
             button2.setVisibility(View.INVISIBLE);
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentUsers = new Intent(getContext(), Profile.class);
+                    intentUsers.putExtra("USER", user.getUsername());
+                    getContext().startActivity(intentUsers);
+                }
+            });
 
             return convertView;
         }
