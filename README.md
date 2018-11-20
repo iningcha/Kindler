@@ -17,3 +17,11 @@ Project 2.5 Sprint #1, improvements from Project 2.3 implementation
 3. Improved User Interface on Book list and wish list
 4. Enabled editing profile and updating username, biography, and profile picture
 5. Added Facebook SSO to the login page
+
+Project 2.6 Sprint #2
+1. Add Log out function
+2. Disable adding duplicate books from main page
+3. Edit profile picture
+4. Start Exchange button
+5. Connect Match to database
+6. Add Browse Users Page to view other users' profiles
