@@ -55,6 +55,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".WishListActivity" />
+        <activity android:name=".OtherWishList" />
+        <activity android:name=".OtherBookList"></activity>
     </application>
 
 </manifest>
