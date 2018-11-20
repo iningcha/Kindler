@@ -1,19 +1,26 @@
 package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kindler.models.BookItem;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -23,105 +30,37 @@ import Database.Book;
 import Database.UserViewModel;
 
 public class WishListActivity extends AppCompatActivity implements View.OnClickListener{
-    private LinearLayout bookshelf;
+    //private LinearLayout bookshelf;
     private static List<Book> books;
+    private ListView mBookList;
     private UserViewModel mUserViewModel;
+    private ArrayAdapter<Book> bookAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wish_list);
-        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
+        //get user view model and load books
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         books = LoadBooks();
 
-        //create horizontal linear layout for books
-        ScrollView bookLayout = findViewById(R.id.bookWishDisplay);
-        //bookshelf = findViewById(R.id.bookLayout);
-        bookshelf = new LinearLayout(this);
-        bookshelf.setOrientation(LinearLayout.VERTICAL);
+        //get list from display
+        mBookList = findViewById(R.id.wishlistDisplay);
 
-        //add books to scroll bar
-        for (int i = 0; i < books.size(); i++) {
-            Log.d("WishListActivityLog", "Wish List Item Book Id: " + Integer.toString(i));
+        //create adapter and bind with list view
+        this.bookAdapter = new WishListAdapter(this, R.layout.customlist, new ArrayList<Book>());
+        this.mBookList.setAdapter(bookAdapter);
 
-            //create horizontal linear layout to hold book and remove button
-            LinearLayout bookView = new LinearLayout(WishListActivity.this);
-            bookView.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            bookView.setOrientation(LinearLayout.HORIZONTAL);
-            bookView.setGravity(Gravity.CENTER);
-
-            //create book view
-            LinearLayout bookArea = new LinearLayout(WishListActivity.this);
-            bookArea.setOrientation(LinearLayout.VERTICAL);
-            bookArea.setPadding(16,0,16,0);
-            bookArea.setLayoutParams( new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    1.0f));
-
-            //create text view for book title
-            TextView bookTitle = new TextView(WishListActivity.this);
-            bookTitle.setText(books.get(i).getBookName());
-            bookTitle.setTextSize(30);
-
-            //create Image view for book picture
-            ImageView bookImage = new ImageView( WishListActivity.this);
-            int maxHeight = 300;
-            int maxWidth = 200;
-            bookImage.setBackgroundColor(Color.WHITE);
-            bookImage.setMaxHeight(maxHeight);
-            bookImage.setMinimumHeight(maxHeight);
-            bookImage.setMinimumWidth(maxWidth);
-            bookImage.setMaxWidth(maxWidth);
-            Picasso.with(getBaseContext()).load(books.get(i).getBookPic()).into(bookImage);
-
-            //add text view and image view to book linear layout
-            bookArea.addView(bookTitle);
-            bookArea.addView(bookImage);
-
-            //create button
-            Button button = new Button(WishListActivity.this);
-            button.setText("Remove");
-            button.setTag(i);
-            button.setOnClickListener(WishListActivity.this);
-
-            //add book area and button to bookView
-            bookView.addView(bookArea);
-            bookView.addView(button);
-
-            //add bookView to book shelf
-            bookshelf.addView(bookView);
-        }
-
-        //add to scroll view
-        bookLayout.addView(bookshelf);
+        //clear adapter and add books
+        bookAdapter.clear();
+        bookAdapter.addAll(books);
     }
 
     //onclick listener for for button
     @Override
     public void onClick(View v){
-        //get button tag
-        int pos = (int) v.getTag();
 
-        //store book name for message
-        Log.d("WishListActivityLog", "Remove Owned List at : " + Integer.toString(pos));
-        String name = books.get(pos).getBookName();
-        int bid = books.get(pos).getBookId();
-        Log.d("WishListActivityLog", "Remove Book Id: " + Integer.toString(bid));
-
-        //remove book at ownedBooks[pos]
-        mUserViewModel.removeOwnedList(bid);
-
-        //remove book associated with button
-        bookshelf.removeView((View)v.getParent());
-
-        //display message to user
-        String message = "Removed : " + name;
-        Toast.makeText(getApplicationContext(), message , Toast.LENGTH_SHORT ).show();
-        books = LoadBooks();
     }
 
     //load book pictures
@@ -130,7 +69,7 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
 
-        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
+        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
         for (int i : mUserViewModel.getWishlist()) {
             Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
             if (mUserViewModel.getBook(i) != null) {
@@ -139,6 +78,91 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
         }
 
         return books;
+    }
+
+    //adapter for book display
+    class WishListAdapter extends ArrayAdapter<Book> implements View.OnClickListener {
+        public WishListAdapter(Context context, int resource, List<Book> objects) {
+            super(context, resource, objects);
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final Book book = getItem(position);
+
+            if(convertView == null) {
+                convertView = LayoutInflater.from(this.getContext()).inflate(R.layout.search_list_item, parent, false);
+            }
+
+            ImageView matchImage = convertView.findViewById(R.id.searchMatchImage);
+            TextView matchUserId = convertView.findViewById(R.id.searchMatchUserId);
+            TextView matchBookTitle = convertView.findViewById(R.id.searchMatchBookTitle);
+            Button removeBookListButton = convertView.findViewById(R.id.searchAddBookListButton);
+            Button invisibleButton = convertView.findViewById(R.id.searchAddWishListButton);
+
+            if (book.getBookPic() != null && !book.getBookPic().equals("")) {
+                Picasso.with(getContext()).load(book.getBookPic()).into(matchImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("Successfully loaded " + book.getBookPic());
+                    }
+
+                    @Override
+                    public void onError() {
+                        System.out.println("Could not load " + book.getBookPic());
+                    }
+                });
+            }
+
+            matchUserId.setText(book.getBookName());
+            matchBookTitle.setText("Authors");
+
+            WishListButtonHandler buttonHandler = new WishListButtonHandler(book);
+
+            //edit remove button
+            removeBookListButton.setText("-");
+            removeBookListButton.setOnClickListener(buttonHandler);
+            invisibleButton.setVisibility(View.INVISIBLE);
+
+            return convertView;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+    }
+
+    class WishListButtonHandler implements View.OnClickListener {
+        private Book mBook;
+        public WishListButtonHandler(Book b) {
+            mBook = b;
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+                case R.id.searchAddBookListButton:
+                    //remove book from local book list and database
+                    mUserViewModel.removeWishList(mBook.getBookId());
+
+                    int bookPos = -1;
+                    for(int i=0; i<books.size();i++){
+                        if(books.get(i).getBookId() == mBook.getBookId()){
+                            bookPos = i;
+                            break;
+                        }
+                    }
+
+                    bookAdapter.remove(books.get(bookPos));
+                    books.remove(bookPos);
+
+                    Toast.makeText(getApplicationContext(), "Removed book from Wish List!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 
 }

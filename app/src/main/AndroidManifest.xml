@@ -25,7 +25,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".Profile" android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".Profile"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".MatchDetail"
             android:parentActivityName=".Match" />
@@ -51,7 +53,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".WishListActivity"></activity>
+        <activity android:name=".WishListActivity" />
     </application>
 
 </manifest>
