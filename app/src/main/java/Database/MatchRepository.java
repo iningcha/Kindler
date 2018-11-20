@@ -16,12 +16,55 @@ public class MatchRepository {
         mMatchDao = db.MatchDao();
     }
 
-    LiveData<List<Match>> getMatchByOwner(Integer uid) {
-        return mMatchDao.getMatchByOwner(uid);
+    List<Match> getMatchByOwner(Integer uid) {
+        getMatchByOwnerAsyncTask guat = new getMatchByOwnerAsyncTask(mMatchDao);
+        guat.execute(uid);
+        List<Match> res = new ArrayList<>();
+        try {
+            res = guat.get();
+        } catch (Exception e) {
+
+        }
+        return res;
     }
 
-    LiveData<List<Match>> getMatchByWisher(Integer uid) {
-        return mMatchDao.getMatchByWisher(uid);
+    private static class getMatchByOwnerAsyncTask extends AsyncTask<Integer, Void, List<Match>> {
+        private MatchDao mAsyncTaskDao;
+
+        getMatchByOwnerAsyncTask(MatchDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<Match> doInBackground(final Integer... i) {
+            return mAsyncTaskDao.getMatchByOwner(i[0]);
+        }
+    }
+
+
+    List<Match> getMatchByWisher(Integer uid) {
+        getMatchByWisherAsyncTask guat = new getMatchByWisherAsyncTask(mMatchDao);
+        guat.execute(uid);
+        List<Match> res = new ArrayList<>();
+        try {
+            res = guat.get();
+        } catch (Exception e) {
+
+        }
+        return res;
+    }
+
+    private static class getMatchByWisherAsyncTask extends AsyncTask<Integer, Void, List<Match>> {
+        private MatchDao mAsyncTaskDao;
+
+        getMatchByWisherAsyncTask(MatchDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<Match> doInBackground(final Integer... i) {
+            return mAsyncTaskDao.getMatchByWisher(i[0]);
+        }
     }
 
 //    List<Match> getMatchById(User u){
