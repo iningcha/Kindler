@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -72,6 +73,8 @@ public class UserListActivity extends AppCompatActivity {
             ImageView image = convertView.findViewById(R.id.searchMatchImage);
             TextView titleLine = convertView.findViewById(R.id.searchMatchUserId);
             TextView secondLine = convertView.findViewById(R.id.searchMatchBookTitle);
+            Button button1 = convertView.findViewById(R.id.searchAddBookListButton);
+            Button button2 = convertView.findViewById(R.id.searchAddWishListButton);
 
             if (imageRaw.length() > 0) {
                 image.setImageBitmap(decodeBase64(imageRaw));
@@ -81,6 +84,9 @@ public class UserListActivity extends AppCompatActivity {
 
             titleLine.setText(profile.getProfileName());
             secondLine.setText("Owns " + Integer.toString(user.getOwnedList().size()) + " books");
+
+            button1.setVisibility(View.INVISIBLE);
+            button2.setVisibility(View.INVISIBLE);
 
             return convertView;
         }

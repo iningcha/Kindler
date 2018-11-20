@@ -15,6 +15,7 @@
             android:name=".LoginActivity"
             android:launchMode="singleTask" />
         <activity android:name=".BookListActivity" />
+        <activity android:name=".UserListActivity" />
         <activity android:name=".DiscoverActivity" />
         <activity android:name=".Match" />
         <activity android:name=".MainActivity">
