@@ -13,6 +13,7 @@
     <string name="main_search">Search</string>
     <string name="discover">Discover</string>
     <string name="logout">Log Out</string>
+    <string name="browse_users">Browse Users</string>
 
     <!--Facebook Related-->
     <string name="facebook_app_id">357506061660341</string>

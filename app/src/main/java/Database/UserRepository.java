@@ -1,6 +1,7 @@
 package Database;
 
 import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,16 +9,17 @@ import android.util.Log;
 import java.util.List;
 import java.util.ArrayList;
 
-public class UserRepository {
+public class UserRepository extends AndroidViewModel {
     private UserDao mUserDao;
     private String mCurrUsername;
 
-    UserRepository(Application application) {
+    public UserRepository(Application application) {
+        super(application);
         UserRoomDatabase db = UserRoomDatabase.getDatabase(application);
         mUserDao = db.UserDao();
     }
 
-    List<User> getAllUser() {
+    public List<User> getAllUser() {
         getAllUserAsyncTask guat = new getAllUserAsyncTask(mUserDao);
         guat.execute();
         List<User> res = new ArrayList<>();
