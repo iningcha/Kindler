@@ -171,6 +171,22 @@ public class UserViewModel extends AndroidViewModel{
         mBookRepository.getBook(b).addOwnedUser(uid);
     }
 
+    public void generateMatch() {
+        List<Book> list = mBookRepository.getAllBook();
+        for (Book b : list) {
+            if (b.getOwnedUser().size() > 0 && b.getWishUser().size() > 0) {
+                for (Integer i : b.getOwnedUser()) {
+                    for (Integer j : b.getWishUser()) {
+                        if (mMatchRepository.checkMatch(i, j).size() == 0) {
+                            Match m = new Match(b.getBookId(), i, j);
+                            mMatchRepository.insert(m);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     //Match
     public List<Match> getMatchByOwner(int uid) {
         return mMatchRepository.getMatchByOwner(uid);

@@ -17,6 +17,9 @@ public interface MatchDao {
     @Query("SELECT * from match_table WHERE wishuser = :uid ORDER BY matchid ASC")
     List<Match> getMatchByWisher(Integer uid);
 
+    @Query("SELECT * from match_table WHERE wishuser = :wishid AND owneduser = :ownedid ORDER BY matchid ASC")
+    List<Match> checkMatch(Integer ownedid, Integer wishid);
+
 //    @Query("SELECT owneduser, wishuser, bookid from book_table WHERE wishuser = :uid AND owneduser IS NOT NULL")
 //    List<Match> getMatchByUserId(Integer uid);
 

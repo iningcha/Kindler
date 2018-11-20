@@ -48,6 +48,31 @@ public class BookRepository {
             return list.get(0);
         }
     }
+    //Retrieve list of all books
+    public List<Book> getAllBook() {
+        getAllBookAsyncTask guat = new getAllBookAsyncTask(mBookDao);
+        guat.execute();
+        List<Book> res = new ArrayList<>();
+        try {
+            res = guat.get();
+        } catch (Exception e) {
+
+        }
+        return res;
+    }
+
+    private static class getAllBookAsyncTask extends AsyncTask<Void, Void, List<Book>> {
+        private BookDao mAsyncTaskDao;
+
+        getAllBookAsyncTask(BookDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<Book> doInBackground(final Void... sth) {
+            return mAsyncTaskDao.getAllBook();
+        }
+    }
 
     // You must call this on a non-UI thread or your app will crash.
     // Like this, Room ensures that you're not doing any long running operations on the main

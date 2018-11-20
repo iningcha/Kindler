@@ -80,6 +80,31 @@ public class MatchRepository {
 //        return res;
 //    }
 
+    List<Match> checkMatch(Integer ownedid, Integer wishid) {
+        checkMatchAsyncTask guat = new checkMatchAsyncTask(mMatchDao);
+        guat.execute(ownedid, wishid);
+        List<Match> res = new ArrayList<>();
+        try {
+            res = guat.get();
+        } catch (Exception e) {
+
+        }
+        return res;
+    }
+
+    private static class checkMatchAsyncTask extends AsyncTask<Integer, Void, List<Match>> {
+        private MatchDao mAsyncTaskDao;
+
+        checkMatchAsyncTask(MatchDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<Match> doInBackground(final Integer... i) {
+            return mAsyncTaskDao.checkMatch(i[0], i[1]);
+        }
+    }
+
     // You must call this on a non-UI thread or your app will crash.
     // Like this, Room ensures that you're not doing any long running operations on the main
     // thread, blocking the UI.

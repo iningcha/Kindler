@@ -14,6 +14,12 @@ public interface BookDao {
     @Query("SELECT * from book_table WHERE bookid = :bi LIMIT 1")
     List<Book> getBook(Integer bi);
 
+    @Query("SELECT * from book_table")
+    List<Book> getAllBook();
+
+    @Query("SELECT * from book_table WHERE bookname = :bn")
+    List<Book> getBookByName(String bn);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Book book);
 
