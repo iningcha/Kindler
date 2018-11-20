@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-@Database(entities = {Match.class}, version = 1)
+@Database(entities = {Match.class}, version = 2)
 @TypeConverters({ListTypeConverter.class})
 public abstract class MatchRoomDatabase extends RoomDatabase {
 
@@ -75,7 +75,20 @@ public abstract class MatchRoomDatabase extends RoomDatabase {
             ArrayList<Integer> a = new ArrayList<>();
 
             Match Match = new Match(1, 1, 2);
+            Match match2 = new Match(7, 1, 2);
+            Match match3 = new Match(9, 1, 2);
+            Match match4 = new Match(3, 2, 1);
+            Match match5 = new Match(2, 2, 1);
+            Match match6 = new Match(6, 2, 1);
+
             mDao.insert(Match);
+            mDao.insert(match2);
+            mDao.insert(match3);
+            mDao.insert(match4);
+            mDao.insert(match5);
+            mDao.insert(match6);
+
+
             return null;
         }
     }

@@ -109,6 +109,7 @@ public class BookRepository {
         protected List<Match> doInBackground(final User... params) {
             List<Match> res = new ArrayList<>();
             List<tempMatch> list = mAsyncTaskDao.getMatchByUserId(params[0].getUserId());
+            Log.d(" this tempMatch shit", Integer.toString(list.size()));
             for(int i = 0; i < list.size(); i++){
                 Match m = new Match();
                 m.setMatchWisher(list.get(i).getWishuser());

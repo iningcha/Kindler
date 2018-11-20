@@ -1,7 +1,6 @@
 package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Database;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -26,12 +25,12 @@ import Database.User;
 public class Match extends AppCompatActivity {
 
     private UserViewModel mUserViewModel;
-//    private List<Database.Match> mMatchList;
+    private List<Database.Match> mMatchList;
     private MatchRepository mMatchRepository;
-
+//    private ArrayList<String> bookTitles = new ArrayList<>();
+    private ArrayList<String> userNames = new ArrayList<>();
     int[] images = new int[6];
     private ArrayList<String> bookTitles = new ArrayList<>(Arrays.asList("Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"));
-    private ArrayList<String> userNames = new ArrayList<>(Arrays.asList("User1", "User2", "User3", "User4", "User5", "User6"));
 
 
     @Override
@@ -43,17 +42,16 @@ public class Match extends AppCompatActivity {
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-
-//        mMatchList = mUserViewModel.getMatchByUserId();
-
-        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mUserViewModel.getMatchByUserId().size()));
-//
-//        for(int m: mMatchList) {
-//            bookTitles.add(mUserViewModel.getBook(mUserViewModel.getMatchByUserId(m).getMatchBookId()).getBookName());
-//            userNames.add(mUserViewModel.getUserById(mUserViewModel.getMatchByUserId(m).getMatchWisher()).getUsername());
-//        }
+        mMatchList = mUserViewModel.getMatchByWisher(mUserViewModel.getCurrUserId());
 
 //        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mMatchList.size()));
+
+        for(Database.Match m: mMatchList) {
+            int matchedUser = mUserViewModel.getCurrUserId() == m.getMatchOwner() ? m.getMatchWisher() : m.getMatchOwner();
+//            int bookID = m.getMatchBookId();
+//            bookTitles.add(mUserViewModel.getBook(bookID).getBookName());
+            userNames.add(mUserViewModel.getUserById(matchedUser).getUsername());
+        }
 
         images[0] = R.drawable.harry;
         images[1] = R.drawable.wrinkle;
