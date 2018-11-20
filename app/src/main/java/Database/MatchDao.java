@@ -9,16 +9,16 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 @Dao
-public interface    MatchDao {
+public interface MatchDao {
 
-    @Query("SELECT * from match_table WHERE owner = :uid ORDER BY matchid ASC")
+    @Query("SELECT * from match_table WHERE owneduser = :uid ORDER BY matchid ASC")
     LiveData<List<Match>> getMatchByOwner(Integer uid);
 
-    @Query("SELECT * from match_table WHERE wisher = :uid ORDER BY matchid ASC")
+    @Query("SELECT * from match_table WHERE wishuser = :uid ORDER BY matchid ASC")
     LiveData<List<Match>> getMatchByWisher(Integer uid);
 
-    @Query("SELECT * from match_table WHERE matchid = :mid LIMIT 1")
-    Match getMatchById(Integer mid);
+//    @Query("SELECT owneduser, wishuser, bookid from book_table WHERE wishuser = :uid AND owneduser IS NOT NULL")
+//    List<Match> getMatchByUserId(Integer uid);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Match match);

@@ -1,9 +1,11 @@
 package Database;
 
 import android.app.Application;
+import android.arch.persistence.room.ColumnInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookRepository {
@@ -66,6 +68,56 @@ public class BookRepository {
         protected Void doInBackground(final Book... params) {
             mAsyncTaskDao.insert(params[0]);
             return null;
+        }
+    }
+
+    List<Match> getMatchById(User u){
+        BookRepository.getMatchByIdAsyncTask guat = new BookRepository.getMatchByIdAsyncTask(mBookDao);
+        guat.execute(u);
+        List<Match> res = new ArrayList<>();
+        try{
+            res = guat.get();
+
+        } catch(Exception e) {
+
+        }
+        return res;
+    }
+
+    public static  class tempMatch {
+        @ColumnInfo(name = "owneduser")
+        public int owneduser;
+
+        @ColumnInfo(name = "wishuser")
+        public int wishuser;
+
+        @ColumnInfo(name = "bookid")
+        public int bookid;
+
+        public int getOwneduser() { return owneduser; }
+        public int getWishuser() { return wishuser; }
+        public int getBookid() { return bookid; }
+    }
+
+
+    private static class getMatchByIdAsyncTask extends AsyncTask<User, Void, List<Match>> {
+        private BookDao mAsyncTaskDao;
+
+        getMatchByIdAsyncTask(BookDao dao) { mAsyncTaskDao = dao; }
+
+        @Override
+        protected List<Match> doInBackground(final User... params) {
+            List<Match> res = new ArrayList<>();
+            List<tempMatch> list = mAsyncTaskDao.getMatchByUserId(params[0].getUserId());
+            for(int i = 0; i < list.size(); i++){
+                Match m = new Match();
+                m.setMatchWisher(list.get(i).getWishuser());
+                m.setMatchOwner(list.get(i).getOwneduser());
+                m.setMatchBookId(list.get(i).getBookid());
+                res.add(m);
+            }
+            return res;
+
         }
     }
 }

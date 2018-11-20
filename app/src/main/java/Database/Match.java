@@ -11,17 +11,17 @@ public class Match {
     @ColumnInfo(name = "matchid")
     private int mMatchId;
 
-    @ColumnInfo(name = "owner")
+    @ColumnInfo(name = "owneduser")
     private int mMatchOwner;
 
-    @ColumnInfo(name = "wisher")
+    @ColumnInfo(name = "wishuser")
     private int mMatchWisher;
 
     @ColumnInfo(name = "bookid")
     private int mMatchBookId;
 
-    @ColumnInfo(name = "status")
-    private boolean mMatchStatus;
+//    @ColumnInfo(name = "status")
+//    private boolean mMatchStatus;
 
     public Match() {}
 
@@ -29,14 +29,14 @@ public class Match {
         this.mMatchBookId = bookid;
         this.mMatchOwner = owner;
         this.mMatchWisher = wisher;
-        this.mMatchStatus = false;
+//        this.mMatchStatus = false;
     }
 
     //getters
     public int getMatchId() {return this.mMatchId;}
     public int getMatchOwner() {return this.mMatchOwner;}
     public int getMatchWisher() {return this.mMatchWisher;}
-    public boolean getMatchStatus() {return this.mMatchStatus;}
+//    public boolean getMatchStatus() {return this.mMatchStatus;}
     public int getMatchBookId() {return this.mMatchBookId;}
 
     //setters
@@ -46,7 +46,7 @@ public class Match {
     public void setMatchOwner(int i) {this.mMatchOwner = i;}
     public void setMatchWisher(int i) {this.mMatchWisher = i;}
     public void setMatchBookId(int i) {this.mMatchBookId = i;}
-    public void setMatchStatus(boolean b) {
-        this.mMatchStatus = b;
-    }
+//    public void setMatchStatus(boolean b) {
+//        this.mMatchStatus = b;
+//    }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserViewModel extends AndroidViewModel{
@@ -181,13 +182,13 @@ public class UserViewModel extends AndroidViewModel{
     }
     */
 
-    public Match getMatchById(int mid) {
-        Match m  = new Match();
-        m.setMatchId(mid);
-        return mMatchRepository.getMatchById(m);
+    public List<Match> getMatchByUserId() {
+        User temp = new User(mCurrUsername, "pw");
+        User u = mUserRepository.getUser(temp);
+        return mBookRepository.getMatchById(u);
     }
 
-    public void updateMatchStatus(int mid) {
-        mMatchRepository.updateStatus(mid);
-    }
+//    public void updateMatchStatus(int mid) {
+//        mMatchRepository.updateStatus(mid);
+//    }
 }

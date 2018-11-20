@@ -26,10 +26,8 @@ import Database.User;
 public class Match extends AppCompatActivity {
 
     private UserViewModel mUserViewModel;
-    private List<Integer> mMatchList;
+//    private List<Database.Match> mMatchList;
     private MatchRepository mMatchRepository;
-//    private ArrayList<String> bookTitles;
-//    private ArrayList<String> userNames;
 
     int[] images = new int[6];
     private ArrayList<String> bookTitles = new ArrayList<>(Arrays.asList("Harry Potter", "A Wrinkle in Time", "1984", "Animal Farm", "Gone Girl", "To All the Boys I've Loved Before"));
@@ -45,14 +43,17 @@ public class Match extends AppCompatActivity {
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        mMatchList = mUserViewModel.getMatches();
 
-        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mMatchList.size()));
+//        mMatchList = mUserViewModel.getMatchByUserId();
 
-        for(int m: mMatchList) {
-            bookTitles.add(mUserViewModel.getBook(mUserViewModel.getMatchById(m).getMatchBookId()).getBookName());
-            userNames.add(mUserViewModel.getUserById(mUserViewModel.getMatchById(m).getMatchWisher()).getUsername());
-        }
+        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mUserViewModel.getMatchByUserId().size()));
+//
+//        for(int m: mMatchList) {
+//            bookTitles.add(mUserViewModel.getBook(mUserViewModel.getMatchByUserId(m).getMatchBookId()).getBookName());
+//            userNames.add(mUserViewModel.getUserById(mUserViewModel.getMatchByUserId(m).getMatchWisher()).getUsername());
+//        }
+
+//        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mMatchList.size()));
 
         images[0] = R.drawable.harry;
         images[1] = R.drawable.wrinkle;

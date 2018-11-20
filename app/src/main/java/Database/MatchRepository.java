@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatchRepository {
@@ -23,18 +24,18 @@ public class MatchRepository {
         return mMatchDao.getMatchByWisher(uid);
     }
 
-    Match getMatchById(Match m){
-        MatchRepository.getMatchByIdAsyncTask guat = new MatchRepository.getMatchByIdAsyncTask(mMatchDao);
-        guat.execute(m);
-        Match res = new Match();
-        try{
-            res = guat.get();
-
-        } catch(Exception e) {
-
-        }
-        return res;
-    }
+//    List<Match> getMatchById(User u){
+//        MatchRepository.getMatchByIdAsyncTask guat = new MatchRepository.getMatchByIdAsyncTask(mMatchDao);
+//        guat.execute(u);
+//        List<Match> res = new ArrayList<>();
+//        try{
+//            res = guat.get();
+//
+//        } catch(Exception e) {
+//
+//        }
+//        return res;
+//    }
 
     // You must call this on a non-UI thread or your app will crash.
     // Like this, Room ensures that you're not doing any long running operations on the main
@@ -43,11 +44,10 @@ public class MatchRepository {
         new insertAsyncTask(mMatchDao).execute(Match);
     }
 
-    void updateStatus(int mid) {
-        Match m = mMatchDao.getMatchById(mid);
-        m.setMatchStatus(true);
-        mMatchDao.insert(m);
-    }
+//    void updateStatus(int mid) {
+//        List<Match> m = mMatchDao.getMatchByUserId(mid);
+//        mMatchDao.insert(m);
+//    }
 
     private static class insertAsyncTask extends AsyncTask<Match, Void, Void> {
 
@@ -64,16 +64,18 @@ public class MatchRepository {
         }
     }
 
-    private static class getMatchByIdAsyncTask extends AsyncTask<Match, Void, Match> {
-        private MatchDao mAsyncTaskDao;
-
-        getMatchByIdAsyncTask(MatchDao dao) { mAsyncTaskDao = dao; }
-
-        @Override
-        protected Match doInBackground(final Match... params) {
-
-            return mAsyncTaskDao.getMatchById(params[0].getMatchId());
-        }
-    }
+//    private static class getMatchByIdAsyncTask extends AsyncTask<User, Void, List<Match>> {
+//        private MatchDao mAsyncTaskDao;
+//
+//        getMatchByIdAsyncTask(MatchDao dao) { mAsyncTaskDao = dao; }
+//
+//        @Override
+//        protected List<Match> doInBackground(final User... params) {
+//
+//            List<Match> list = mAsyncTaskDao.getMatchByUserId(params[0].getUserId());
+//            return list;
+//
+//        }
+//    }
 
 }
