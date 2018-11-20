@@ -115,8 +115,11 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
                 });
             }
 
+            //set book name
             matchUserId.setText(book.getBookName());
-            matchBookTitle.setText("Authors");
+            
+            //make author textView invisible
+            matchBookTitle.setVisibility(View.INVISIBLE);
 
             WishListButtonHandler buttonHandler = new WishListButtonHandler(book);
 
