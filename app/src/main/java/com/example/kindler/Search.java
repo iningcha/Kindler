@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,15 @@ public class Search extends AppCompatActivity implements View.OnClickListener {
         this._mSearchResultList.setAdapter(_mBookListAdapter);
 
         this._mButton.setOnClickListener(this);
+
+        this._mSearch.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                _mButton.performClick();
+                return true;
+            }
+        });
     }
 
     @Override

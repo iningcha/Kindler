@@ -33,6 +33,7 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_book_list);
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
+        Log.d("WHERE ARE THE", "FUCKING BOOKS");
         books = LoadBooks();
 
         //create horizontal linear layout for books
@@ -121,6 +122,8 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         //display message to user
         String message = "Removed : " + name;
         Toast.makeText(getApplicationContext(), message , Toast.LENGTH_SHORT ).show();
+
+        System.out.println("IMMA LOAD SOME BOOKS!");
         books = LoadBooks();
     }
 
@@ -129,6 +132,8 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
     {
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
+
+        System.out.println("LOADING BOOKS!");
 
         Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
         for (int i : mUserViewModel.getOwnedlist()) {
