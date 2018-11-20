@@ -12,10 +12,10 @@ import java.util.List;
 public interface MatchDao {
 
     @Query("SELECT * from match_table WHERE owneduser = :uid ORDER BY matchid ASC")
-    LiveData<List<Match>> getMatchByOwner(Integer uid);
+    List<Match> getMatchByOwner(Integer uid);
 
     @Query("SELECT * from match_table WHERE wishuser = :uid ORDER BY matchid ASC")
-    LiveData<List<Match>> getMatchByWisher(Integer uid);
+    List<Match> getMatchByWisher(Integer uid);
 
 //    @Query("SELECT owneduser, wishuser, bookid from book_table WHERE wishuser = :uid AND owneduser IS NOT NULL")
 //    List<Match> getMatchByUserId(Integer uid);

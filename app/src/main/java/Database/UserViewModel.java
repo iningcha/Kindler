@@ -172,15 +172,14 @@ public class UserViewModel extends AndroidViewModel{
     }
 
     //Match
-    /*
-    public LiveData<List<Match>> getMatchByOwner(int uid) {
+    public List<Match> getMatchByOwner(int uid) {
         return mMatchRepository.getMatchByOwner(uid);
     }
 
-    public LiveData<List<Match>> getMatchByWisher(int uid) {
+    public List<Match> getMatchByWisher(int uid) {
         return mMatchRepository.getMatchByWisher(uid);
     }
-    */
+
 
     public List<Match> getMatchByUserId() {
         User temp = new User(mCurrUsername, "pw");
