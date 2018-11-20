@@ -172,6 +172,7 @@ public class UserViewModel extends AndroidViewModel{
     }
 
     public void generateMatch() {
+        mMatchRepository.deleteTable();
         List<Book> list = mBookRepository.getAllBook();
         for (Book b : list) {
             if (b.getOwnedUser().size() > 0 && b.getWishUser().size() > 0) {

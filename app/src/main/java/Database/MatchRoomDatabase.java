@@ -51,7 +51,7 @@ public abstract class MatchRoomDatabase extends RoomDatabase {
             super.onOpen(db);
             // If you want to keep the data through app restarts,
             // comment out the following line.
-            new PopulateDbAsync(INSTANCE).execute();
+//            new PopulateDbAsync(INSTANCE).execute();
         }
     };
 
@@ -71,22 +71,22 @@ public abstract class MatchRoomDatabase extends RoomDatabase {
         protected Void doInBackground(final Void... params) {
             // Start the app with a clean database every time.
             // Not needed if you only populate on creation.
-            //mDao.deleteAll();
-            ArrayList<Integer> a = new ArrayList<>();
-
-            Match Match = new Match(1, 1, 2);
-            Match match2 = new Match(7, 1, 2);
-            Match match3 = new Match(9, 1, 2);
-            Match match4 = new Match(3, 2, 1);
-            Match match5 = new Match(2, 2, 1);
-            Match match6 = new Match(6, 2, 1);
-
-            mDao.insert(Match);
-            mDao.insert(match2);
-            mDao.insert(match3);
-            mDao.insert(match4);
-            mDao.insert(match5);
-            mDao.insert(match6);
+//            MatchRoomDatabase.clearAllTables();
+//            ArrayList<Integer> a = new ArrayList<>();
+//
+//            Match Match = new Match(1, 1, 2);
+//            Match match2 = new Match(7, 1, 2);
+//            Match match3 = new Match(9, 1, 2);
+//            Match match4 = new Match(3, 2, 1);
+//            Match match5 = new Match(2, 2, 1);
+//            Match match6 = new Match(6, 2, 1);
+//
+//            mDao.insert(Match);
+//            mDao.insert(match2);
+//            mDao.insert(match3);
+//            mDao.insert(match4);
+//            mDao.insert(match5);
+//            mDao.insert(match6);
 
 
             return null;

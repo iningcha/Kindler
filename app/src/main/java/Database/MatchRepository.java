@@ -80,6 +80,8 @@ public class MatchRepository {
 //        return res;
 //    }
 
+
+
     List<Match> checkMatch(Integer ownedid, Integer wishid) {
         checkMatchAsyncTask guat = new checkMatchAsyncTask(mMatchDao);
         guat.execute(ownedid, wishid);
@@ -111,6 +113,7 @@ public class MatchRepository {
     void insert(Match Match) {
         new insertAsyncTask(mMatchDao).execute(Match);
     }
+    void deleteTable(){ new deleteAsyncTask(mMatchDao); }
 
 //    void updateStatus(int mid) {
 //        List<Match> m = mMatchDao.getMatchByUserId(mid);
@@ -132,18 +135,20 @@ public class MatchRepository {
         }
     }
 
-//    private static class getMatchByIdAsyncTask extends AsyncTask<User, Void, List<Match>> {
-//        private MatchDao mAsyncTaskDao;
-//
-//        getMatchByIdAsyncTask(MatchDao dao) { mAsyncTaskDao = dao; }
-//
-//        @Override
-//        protected List<Match> doInBackground(final User... params) {
-//
-//            List<Match> list = mAsyncTaskDao.getMatchByUserId(params[0].getUserId());
-//            return list;
-//
-//        }
-//    }
+    private static class deleteAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private MatchDao mAsyncTaskDao;
+
+        deleteAsyncTask(MatchDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            mAsyncTaskDao.deleteTable();
+            return null;
+        }
+    }
+
 
 }

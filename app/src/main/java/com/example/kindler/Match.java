@@ -41,10 +41,10 @@ public class Match extends AppCompatActivity {
         final ListView matchList = findViewById(R.id.matchList);
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-
+        mUserViewModel.generateMatch();
         mMatchList = mUserViewModel.getMatchByWisher(mUserViewModel.getCurrUserId());
 
-//        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mMatchList.size()));
+        Log.d("@@@@CHECKMATCHLIST", Integer.toString(mMatchList.size()));
 
         for(Database.Match m: mMatchList) {
             int matchedUser = mUserViewModel.getCurrUserId() == m.getMatchOwner() ? m.getMatchWisher() : m.getMatchOwner();

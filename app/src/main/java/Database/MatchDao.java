@@ -25,4 +25,7 @@ public interface MatchDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Match match);
+
+    @Query("DELETE FROM match_table")
+    void deleteTable();
 }
