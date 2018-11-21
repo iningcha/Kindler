@@ -23,18 +23,21 @@ import java.util.List;
 
 import Database.User;
 import Database.UserRepository;
+import Database.UserViewModel;
 
 public class UserListActivity extends AppCompatActivity {
     private ListView mUserListView;
     private UserListAdapter mUserListAdapter;
     private List<User> mUserList;
     private UserRepository mUserRepository;
+    private UserViewModel mUserViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
 
+        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserRepository = ViewModelProviders.of(this).get(UserRepository.class);
         mUserList = mUserRepository.getAllUser();
 
@@ -88,7 +91,20 @@ public class UserListActivity extends AppCompatActivity {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intentUsers = new Intent(getContext(), Profile.class);
+                    Intent intentUsers = null;
+                    
+                    /*
+                    //create intent to correct type of profile
+                    if(user.getUserId() == mUserViewModel.getCurrUserId()) {
+                        intentUsers = new Intent(getContext(), Profile.class);
+                    }
+                    else
+                    {
+                        intentUsers = new Intent(getContext(), OtherProfile.class);
+                    }
+                    */
+
+                    //place username in Intent
                     intentUsers.putExtra("USER", user.getUsername());
                     getContext().startActivity(intentUsers);
                 }

@@ -25,6 +25,7 @@ import Database.UserViewModel;
 public class OtherWishList extends AppCompatActivity implements View.OnClickListener {
     private static List<Book> books;
     private int mUserID;
+    private int mListOwnerID;
     private ListView mBookList;
     private UserViewModel mUserViewModel;
     private ArrayAdapter<Book> bookAdapter;
@@ -33,6 +34,9 @@ public class OtherWishList extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_wish_list);
+
+        //get list owner id from intent
+        mListOwnerID = getIntent().getIntExtra("ownerID" , -1);
 
         //get user view model and load books
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
@@ -64,7 +68,7 @@ public class OtherWishList extends AppCompatActivity implements View.OnClickList
         ArrayList<Book> books = new ArrayList<Book>();
 
         Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
-        for (int i : mUserViewModel.getUserById(mUserID).getWishList()) {
+        for (int i : mUserViewModel.getUserById(mListOwnerID).getWishList()) {
             Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
             if (mUserViewModel.getBook(i) != null) {
                 books.add(mUserViewModel.getBook(i));

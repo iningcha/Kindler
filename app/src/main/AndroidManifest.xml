@@ -56,7 +56,8 @@
         </activity>
         <activity android:name=".WishListActivity" />
         <activity android:name=".OtherWishList" />
-        <activity android:name=".OtherBookList"></activity>
+        <activity android:name=".OtherBookList" />
+        <activity android:name=".OtherProfile"></activity>
     </application>
 
 </manifest>
