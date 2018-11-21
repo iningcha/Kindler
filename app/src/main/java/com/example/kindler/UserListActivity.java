@@ -92,7 +92,7 @@ public class UserListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intentUsers = null;
-                    
+
                     /*
                     //create intent to correct type of profile
                     if(user.getUserId() == mUserViewModel.getCurrUserId()) {
@@ -103,6 +103,8 @@ public class UserListActivity extends AppCompatActivity {
                         intentUsers = new Intent(getContext(), OtherProfile.class);
                     }
                     */
+
+                    intentUsers = new Intent(getContext(), Profile.class);
 
                     //place username in Intent
                     intentUsers.putExtra("USER", user.getUsername());
