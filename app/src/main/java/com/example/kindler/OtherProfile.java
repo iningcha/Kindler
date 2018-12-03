@@ -2,8 +2,11 @@ package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,8 +16,6 @@ import org.w3c.dom.Text;
 
 import Database.User;
 import Database.UserViewModel;
-
-import static com.example.kindler.Profile.decodeBase64;
 
 public class OtherProfile extends AppCompatActivity implements View.OnClickListener{
     private UserViewModel mUserViewModel;
@@ -27,7 +28,7 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
-        ImageView profilePicture = findViewById(R.id.profilePicture);
+        ImageView profilePicture = findViewById(R.id.otherProfilePicture);
         TextView name = findViewById(R.id.otherName);
         TextView biography = findViewById(R.id.otherBiography);
         Button wish = findViewById(R.id.otherWishListButton);
@@ -41,20 +42,20 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
             p = u.getProfile();
         }
 
-        /*
-        //set image
+        //set text for name and bio
+        name.setText(p.getProfileName());
+        biography.setText(p.getProfileBiography());
+
+        TextView profileLabel = findViewById(R.id.otherProfileTitle);
+        profileLabel.setText(p.getProfileName() + "'s Profile");
+
         String imageStr = p.getProfilePicture();
-        if (imageStr.length()>0) {
+
+        if (decodeBase64(imageStr) != null) {
             profilePicture.setImageBitmap(decodeBase64(imageStr));
         }else {
             profilePicture.setImageResource(R.drawable.test);
         }
-
-        */
-
-        //set text for name and bio
-        name.setText(p.getProfileName());
-        biography.setText(p.getProfileBiography());
 
         //set onclick listener for booklist / wishlist
         wish.setOnClickListener(this);
@@ -86,5 +87,11 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("ownerID",mProfileOwnerID);
             startActivity(intent);
         }
+    }
+
+    public static Bitmap decodeBase64(String input) {
+        byte[] decodedByte = Base64.decode(input, 0);
+        return BitmapFactory
+                .decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 }

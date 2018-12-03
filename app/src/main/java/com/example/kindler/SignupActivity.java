@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 import Database.UserViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import Database.Profile;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
@@ -97,9 +98,7 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.show();
 
         String name = _nameText.getText().toString();
-        //String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
-        //String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -132,6 +131,9 @@ public class SignupActivity extends AppCompatActivity {
 //
 //            databaseHelper.addUserDetailModel(userDetailModel);
             // Snack Bar to show success message that record saved successfully
+            Database.Profile p = mUserViewModel.getCurrProfile();
+            p.setProfileName(_nameText.getText().toString());
+            mUserViewModel.setProfile(p);
 
             PreferencesService.instance().saveLogin_Status("true");
             finish();

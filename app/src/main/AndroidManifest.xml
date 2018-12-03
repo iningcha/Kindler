@@ -58,6 +58,7 @@
         <activity android:name=".OtherWishList" />
         <activity android:name=".OtherBookList" />
         <activity android:name=".OtherProfile"></activity>
+        <activity android:name=".EditProfileActivity" />
     </application>
 
 </manifest>
