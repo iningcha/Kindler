@@ -57,12 +57,12 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
         biography.setText(p.getProfileBiography());
 
         //set onclick listener for booklist / wishlist
-        //wish.setOnClickListener(this);
-        //book.setOnClickListener(this);
+        wish.setOnClickListener(this);
+        book.setOnClickListener(this);
 
         //make book and wishlist button invisible
-        wish.setVisibility(View.INVISIBLE);
-        book.setVisibility(View.INVISIBLE);
+        //wish.setVisibility(View.INVISIBLE);
+        //book.setVisibility(View.INVISIBLE);
 
 
     }

@@ -69,11 +69,13 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
 
-        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getOwnedlist().size()));
-        for (int i : mUserViewModel.getOwnedlist()) {
+        List<Integer> booklist = mUserViewModel.getOwnedlist();
+        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(booklist.size()));
+        for (int i : booklist) {
             Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
-            if (mUserViewModel.getBook(i) != null) {
-                books.add(mUserViewModel.getBook(i));
+            Book book = mUserViewModel.getBook(i);
+            if (book != null) {
+                books.add(book);
             }
         }
 
@@ -145,15 +147,16 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onClick(View v) {
-
+            int bookID;
             switch (v.getId()) {
                 case R.id.searchAddBookListButton:
                     //remove book from local book list and database
-                    mUserViewModel.removeOwnedList(mBook.getBookId());
+                    bookID = mBook.getBookId();
+                    mUserViewModel.removeOwnedList(bookID);
 
                     int bookPos = -1;
                     for(int i=0; i<books.size();i++){
-                        if(books.get(i).getBookId() == mBook.getBookId()){
+                        if(books.get(i).getBookId() == bookID){
                             bookPos = i;
                             break;
                         }

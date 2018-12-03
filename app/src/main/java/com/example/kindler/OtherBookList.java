@@ -19,7 +19,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import Database.Book;
 import Database.UserViewModel;
@@ -28,6 +30,7 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
     private static List<Book> books;
     private int mUserID;
     private int mListOwnerID;
+    private Set<Integer> userBooks;
     private ListView mBookList;
     private UserViewModel mUserViewModel;
     private ArrayAdapter<Book> bookAdapter;
@@ -43,6 +46,7 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
         //get user view model and load books
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserID = mUserViewModel.getCurrUserId();
+        LoadSet();
         books = LoadBooks();
 
         //get list from display
@@ -69,8 +73,9 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
 
-        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
-        for (int i : mUserViewModel.getUserById(mListOwnerID).getOwnedList()) {
+        List<Integer> otherList = mUserViewModel.getUserById(mListOwnerID).getOwnedList();
+        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(otherList.size()));
+        for (int i : otherList) {
             Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
             if (mUserViewModel.getBook(i) != null) {
                 books.add(mUserViewModel.getBook(i));
@@ -78,6 +83,29 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
         }
 
         return books;
+    }
+
+    protected void LoadSet()
+    {
+        userBooks = new HashSet<Integer>();
+        List<Integer> booklist = mUserViewModel.getOwnedlist();
+        List<Integer> wishlist = mUserViewModel.getWishlist();
+        for(int i : booklist)
+        {
+            if(!userBooks.contains(i))
+            {
+                userBooks.add(i);
+            }
+        }
+
+        for(int i : wishlist)
+        {
+            if(!userBooks.contains(i))
+            {
+                userBooks.add(i);
+            }
+        }
+
     }
 
     //adapter for book display
@@ -127,7 +155,7 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
             wishButton.setOnClickListener(buttonHandler);
 
             //make buttons invisible if book is already in a user list
-            if(book.getOwnedUser().contains(mUserID) || book.getWishUser().contains(mUserID)){
+            if(userBooks.contains(book.getBookId())){
                 bookButton.setVisibility(View.INVISIBLE);
                 wishButton.setVisibility(View.INVISIBLE);
             }
@@ -151,12 +179,14 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
         public void onClick(View v) {
 
             ViewGroup container = (ViewGroup)v.getParent();
+            int bookID = -1;
 
             switch (v.getId()) {
                 case R.id.searchAddBookListButton:
                     //add book to user book list
-                    mUserViewModel.addOwnedList(mBook.getBookId());
-                    mUserViewModel.addOwnedUser(mBook.getBookId(), mUserID );
+                    bookID = mBook.getBookId();
+                    mUserViewModel.addOwnedList(bookID);
+                    mUserViewModel.addOwnedUser(bookID, mUserID );
 
                     //make add and wish button invisible
                     v.setVisibility(View.INVISIBLE);
@@ -167,8 +197,9 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
 
                 case R.id.searchAddWishListButton:
                     //add book to user book list
-                    mUserViewModel.addWishList(mBook.getBookId());
-                    mUserViewModel.addWishUser(mBook.getBookId(), mUserID );
+                    bookID = mBook.getBookId();
+                    mUserViewModel.addWishList(bookID);
+                    mUserViewModel.addWishUser(bookID, mUserID );
 
                     //make add and wish button invisible
                     v.setVisibility(View.INVISIBLE);
