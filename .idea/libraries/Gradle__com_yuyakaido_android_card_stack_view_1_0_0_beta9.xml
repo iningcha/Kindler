@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.yuyakaido.android:card-stack-view-1.0.0-beta9">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/card-stack-view-1.0.0-beta9.aar/55b33ed0353a7f0c674d28ced1befe7c/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/card-stack-view-1.0.0-beta9.aar/55b33ed0353a7f0c674d28ced1befe7c/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.yuyakaido.android/card-stack-view/1.0.0-beta9/f78e710a30a349b574aa1943254e11b76d131f1e/card-stack-view-1.0.0-beta9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
