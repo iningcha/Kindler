@@ -2,12 +2,17 @@ package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -55,8 +60,59 @@ public class BookListActivity extends AppCompatActivity implements View.OnClickL
         //clear adapter and add books
         bookAdapter.clear();
         bookAdapter.addAll(books);
+        Toolbar mtoolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mtoolbar);
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem item = menu.findItem(R.id.menu_search);
+        item.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_search:
+                Intent intentsearch = new Intent(this, Search.class);
+                this.startActivity(intentsearch);
+                break;
+            case R.id.menu_profile:
+                Intent intentprofile = new Intent(this, Profile.class);
+                this.startActivity(intentprofile);
+                break;
+            case R.id.menu_booklist:
+                Intent intentbooklist = new Intent(this, BookListActivity.class);
+                this.startActivity(intentbooklist);
+                break;
+            case R.id.menu_wishlist:
+                Intent intentwishlist = new Intent(this,WishListActivity.class);
+                this.startActivity(intentwishlist);
+                break;
+            case R.id.menu_matches:
+                Intent intentmatches = new Intent(this, Match.class);
+                this.startActivity(intentmatches);
+                break;
+            case R.id.menu_users:
+                Intent intentUsers = new Intent(this, UserListActivity.class);
+                this.startActivity(intentUsers);
+                break;
+            case R.id.menu_logout:
+                Toast.makeText(getApplicationContext(), "Logged Out!" , Toast.LENGTH_SHORT ).show();
+                Intent intentlogout = new Intent(this, LoginActivity.class);
+                this.startActivity(intentlogout);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
     //onclick listener for for button
     @Override
     public void onClick(View v){

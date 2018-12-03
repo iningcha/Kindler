@@ -8,17 +8,20 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -43,6 +46,58 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         init();
         listeners();
+        Toolbar mtoolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mtoolbar);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem item = menu.findItem(R.id.menu_search);
+item.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_search:
+                Intent intentsearch = new Intent(this, Search.class);
+                this.startActivity(intentsearch);
+                break;
+            case R.id.menu_profile:
+                Intent intentprofile = new Intent(this, Profile.class);
+                this.startActivity(intentprofile);
+                break;
+            case R.id.menu_booklist:
+                Intent intentbooklist = new Intent(this, BookListActivity.class);
+                this.startActivity(intentbooklist);
+                break;
+            case R.id.menu_wishlist:
+                Intent intentwishlist = new Intent(this,WishListActivity.class);
+                this.startActivity(intentwishlist);
+                break;
+            case R.id.menu_matches:
+                Intent intentmatches = new Intent(this, Match.class);
+                this.startActivity(intentmatches);
+                break;
+            case R.id.menu_users:
+                Intent intentUsers = new Intent(this, UserListActivity.class);
+                this.startActivity(intentUsers);
+                break;
+            case R.id.menu_logout:
+                Toast.makeText(getApplicationContext(), "Logged Out!" , Toast.LENGTH_SHORT ).show();
+                Intent intentlogout = new Intent(this, LoginActivity.class);
+                this.startActivity(intentlogout);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     public void init() {
@@ -65,11 +120,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
         imageStr=p.getProfilePicture();
 
-        if (imageStr.length()>0) {
-            profilePicture.setImageBitmap(decodeBase64(imageStr));
-        }else {
-        profilePicture.setImageResource(R.drawable.test);
-        }
+//        if (imageStr.length()>0) {
+//            profilePicture.setImageBitmap(decodeBase64(imageStr));
+//        }else {
+        profilePicture.setImageResource(android.R.drawable.ic_menu_camera);
+//        }
         name.setText("Samantha Chang");
         biography.setText("Student studying CS at USC");
 
@@ -126,7 +181,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
 
             if (requestCode == 1) {
                 bitmap = (Bitmap) data.getExtras().get("data");
-                bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
 
                 profilePicture.setImageBitmap(bitmap);
 
@@ -140,7 +195,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                     String picturePath = c.getString(columnIndex);
                     c.close();
                     bitmap = (BitmapFactory.decodeFile(picturePath));
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
                     profilePicture.setImageBitmap(bitmap);
 
 
