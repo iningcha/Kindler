@@ -34,13 +34,14 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
         Button book = findViewById(R.id.otherBookListButton);
         Database.Profile p = mUserViewModel.getCurrProfile();
 
-        String username = getIntent().getStringExtra("USER");
-        if (username != null && !username.equals("")) {
-            User u = mUserViewModel.getUser(username);
-            mProfileOwnerID = u.getUserId();
+        Integer userProfileID = getIntent().getIntExtra("userProfileID", -1);
+        if (userProfileID > -1) {
+            User u = mUserViewModel.getUserById(userProfileID);
+            mProfileOwnerID = userProfileID;
             p = u.getProfile();
         }
 
+        /*
         //set image
         String imageStr = p.getProfilePicture();
         if (imageStr.length()>0) {
@@ -49,13 +50,19 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
             profilePicture.setImageResource(R.drawable.test);
         }
 
+        */
+
         //set text for name and bio
         name.setText(p.getProfileName());
         biography.setText(p.getProfileBiography());
 
         //set onclick listener for booklist / wishlist
-        wish.setOnClickListener(this);
-        book.setOnClickListener(this);
+        //wish.setOnClickListener(this);
+        //book.setOnClickListener(this);
+
+        //make book and wishlist button invisible
+        wish.setVisibility(View.INVISIBLE);
+        book.setVisibility(View.INVISIBLE);
 
 
     }

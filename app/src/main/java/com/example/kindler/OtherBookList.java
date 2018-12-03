@@ -70,7 +70,7 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
         ArrayList<Book> books = new ArrayList<Book>();
 
         Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(mUserViewModel.getWishlist().size()));
-        for (int i : mUserViewModel.getUserById(mUserID).getOwnedList()) {
+        for (int i : mUserViewModel.getUserById(mListOwnerID).getOwnedList()) {
             Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
             if (mUserViewModel.getBook(i) != null) {
                 books.add(mUserViewModel.getBook(i));

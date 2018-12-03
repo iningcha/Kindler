@@ -31,6 +31,7 @@ public class UserListActivity extends AppCompatActivity {
     private List<User> mUserList;
     private UserRepository mUserRepository;
     private UserViewModel mUserViewModel;
+    private int mCurrUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class UserListActivity extends AppCompatActivity {
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserRepository = ViewModelProviders.of(this).get(UserRepository.class);
         mUserList = mUserRepository.getAllUser();
+        mCurrUserID = mUserViewModel.getCurrUserId();
 
         mUserListView = findViewById(R.id.usersListView);
         mUserListAdapter = new UserListAdapter(this, R.layout.customlist, new ArrayList<User>());
@@ -92,22 +94,19 @@ public class UserListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intentUsers = null;
+                    Integer userID = user.getUserId();
 
-                    /*
                     //create intent to correct type of profile
-                    if(user.getUserId() == mUserViewModel.getCurrUserId()) {
+                    if(userID.equals(mCurrUserID)) {
                         intentUsers = new Intent(getContext(), Profile.class);
                     }
                     else
                     {
                         intentUsers = new Intent(getContext(), OtherProfile.class);
                     }
-                    */
-
-                    intentUsers = new Intent(getContext(), Profile.class);
 
                     //place username in Intent
-                    intentUsers.putExtra("USER", user.getUsername());
+                    intentUsers.putExtra("userProfileID", userID);
                     getContext().startActivity(intentUsers);
                 }
             });

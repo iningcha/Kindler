@@ -108,15 +108,16 @@
     <Button
         android:id="@+id/otherBookListButton"
         android:layout_width="260dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="Button"
+        android:layout_marginTop="8dp"
+        android:text="@string/book_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="439dp"
+        app:layout_constraintTop_toBottomOf="@+id/otherBiography"
         tools:text="@string/book_list" />
 
     <Button
@@ -129,11 +130,11 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Button"
+        android:text="@string/wish_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintTop_toBottomOf="@+id/otherBookListButton"
         tools:text="@string/wish_list" />
 
 </android.support.constraint.ConstraintLayout>

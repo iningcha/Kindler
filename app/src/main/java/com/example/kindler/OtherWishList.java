@@ -152,12 +152,14 @@ public class OtherWishList extends AppCompatActivity implements View.OnClickList
         public void onClick(View v) {
 
             ViewGroup container = (ViewGroup)v.getParent();
+            int bookID = -1;
 
             switch (v.getId()) {
                 case R.id.searchAddBookListButton:
                     //add book to user book list
-                    mUserViewModel.addOwnedList(mBook.getBookId());
-                    mUserViewModel.addOwnedUser(mBook.getBookId(), mUserID );
+                    bookID = mBook.getBookId();
+                    mUserViewModel.addOwnedList(bookID);
+                    mUserViewModel.addOwnedUser(bookID, mUserID );
 
                     //make add and wish button invisible
                     v.setVisibility(View.INVISIBLE);
@@ -168,8 +170,9 @@ public class OtherWishList extends AppCompatActivity implements View.OnClickList
 
                 case R.id.searchAddWishListButton:
                     //add book to user book list
-                    mUserViewModel.addWishList(mBook.getBookId());
-                    mUserViewModel.addWishUser(mBook.getBookId(), mUserID );
+                    bookID = mBook.getBookId();
+                    mUserViewModel.addWishList(bookID);
+                    mUserViewModel.addWishUser(bookID, mUserID );
 
                     //make add and wish button invisible
                     v.setVisibility(View.INVISIBLE);
