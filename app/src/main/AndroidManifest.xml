@@ -18,6 +18,8 @@
         <activity android:name=".UserListActivity" />
         <activity android:name=".DiscoverActivity" />
         <activity android:name=".Match" />
+        <activity android:name=".ExchangeBookList" />
+        <activity android:name=".ExchangeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

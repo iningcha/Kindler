@@ -2,6 +2,7 @@ package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -148,7 +149,7 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
             //make author textView invisible
             matchBookTitle.setVisibility(View.INVISIBLE);
 
-            OtherBookListButtonHandler buttonHandler = new OtherBookListButtonHandler(book);
+            OtherBookListButtonHandler buttonHandler = new OtherBookListButtonHandler(book, this.getContext());
 
             //add onclick listener to buttons
             bookButton.setOnClickListener(buttonHandler);
@@ -172,8 +173,11 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
 
     class OtherBookListButtonHandler implements View.OnClickListener {
         private Book mBook;
-        public OtherBookListButtonHandler(Book b) {
+        private Context mContext;
+
+        public OtherBookListButtonHandler(Book b, Context context) {
             mBook = b;
+            mContext = context;
         }
 
         @Override
@@ -197,16 +201,10 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
                     break;
 
                 case R.id.searchAddWishListButton:
-//                    //add book to user book list
-//                    bookID = mBook.getBookId();
-//                    mUserViewModel.addWishList(bookID);
-//                    mUserViewModel.addWishUser(bookID, mUserID );
-//
-//                    //make add and wish button invisible
-//                    v.setVisibility(View.INVISIBLE);
-//                    container.getChildAt(3).setVisibility(View.INVISIBLE);
-//
-//                    Toast.makeText(getApplicationContext(), "Added book to Wish List!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this.mContext, ExchangeBookList.class);
+                    intent.putExtra("otherOwnerId", mListOwnerID);
+                    intent.putExtra("otherOwnerBookId", mBook.getBookId());
+                    this.mContext.startActivity(intent);
                     break;
 
             }

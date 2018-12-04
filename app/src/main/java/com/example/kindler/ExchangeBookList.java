@@ -2,10 +2,15 @@ package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,8 +33,8 @@ import Database.UserViewModel;
 
 public class ExchangeBookList extends AppCompatActivity {
     private static List<Book> books;
-    private int mUserID;
-    private int mListOwnerID;
+    private int mOtherOwnerId;
+    private int mOtherOwnerBookId;
     private Set<Integer> userBooks;
     private ListView mBookList;
     private UserViewModel mUserViewModel;
@@ -38,27 +43,78 @@ public class ExchangeBookList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_other_book_list);
+        setContentView(R.layout.activity_book_list);
 
         //get list owner id
-        mListOwnerID = getIntent().getIntExtra("ownerID", -1);
+        mOtherOwnerId = getIntent().getIntExtra("otherOwnerId", -1);
+        mOtherOwnerBookId = getIntent().getIntExtra("otherOwnerBookId", -1);
 
         //get user view model and load books
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        mUserID = mUserViewModel.getCurrUserId();
-        LoadSet();
         books = LoadBooks();
 
         //get list from display
-        mBookList = findViewById(R.id.otherBookListDisplay);
+        mBookList = findViewById(R.id.bookListDisplay);
 
         //create adapter and bind with list view
-        this.bookAdapter = new ExchangeBookList.OtherBookListAdapter(this, R.layout.customlist, new ArrayList<Book>());
+        this.bookAdapter = new ExchangeBookList.OwnedListAdapter(this, R.layout.customlist, new ArrayList<Book>());
         this.mBookList.setAdapter(bookAdapter);
 
         //clear adapter and add books
         bookAdapter.clear();
         bookAdapter.addAll(books);
+        Toolbar mtoolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mtoolbar);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem item = menu.findItem(R.id.menu_search);
+        item.setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_search:
+                Intent intentsearch = new Intent(this, Search.class);
+                this.startActivity(intentsearch);
+                break;
+            case R.id.menu_profile:
+                Intent intentprofile = new Intent(this, Profile.class);
+                this.startActivity(intentprofile);
+                break;
+            case R.id.menu_booklist:
+                Intent intentbooklist = new Intent(this, BookListActivity.class);
+                this.startActivity(intentbooklist);
+                break;
+            case R.id.menu_wishlist:
+                Intent intentwishlist = new Intent(this,WishListActivity.class);
+                this.startActivity(intentwishlist);
+                break;
+            case R.id.menu_matches:
+                Intent intentmatches = new Intent(this, Match.class);
+                this.startActivity(intentmatches);
+                break;
+            case R.id.menu_users:
+                Intent intentUsers = new Intent(this, UserListActivity.class);
+                this.startActivity(intentUsers);
+                break;
+            case R.id.menu_logout:
+                Toast.makeText(getApplicationContext(), "Logged Out!" , Toast.LENGTH_SHORT ).show();
+                Intent intentlogout = new Intent(this, LoginActivity.class);
+                this.startActivity(intentlogout);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     //load book pictures
@@ -67,46 +123,25 @@ public class ExchangeBookList extends AppCompatActivity {
         //create array list for books
         ArrayList<Book> books = new ArrayList<Book>();
 
-        List<Integer> otherList = mUserViewModel.getUserById(mListOwnerID).getOwnedList();
-        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(otherList.size()));
-        for (int i : otherList) {
+        List<Integer> booklist = mUserViewModel.getOwnedlist();
+        Log.d("BookListActivityLog", "Book List Size: " + Integer.toString(booklist.size()));
+        for (int i : booklist) {
             Log.d("BookListActivityLog", "Book List Item Book Id: " + Integer.toString(i));
-            if (mUserViewModel.getBook(i) != null) {
-                books.add(mUserViewModel.getBook(i));
+            Book book = mUserViewModel.getBook(i);
+            if (book != null) {
+                books.add(book);
             }
         }
 
         return books;
     }
 
-    protected void LoadSet()
-    {
-        userBooks = new HashSet<Integer>();
-        List<Integer> booklist = mUserViewModel.getOwnedlist();
-        List<Integer> wishlist = mUserViewModel.getWishlist();
-        for(int i : booklist)
-        {
-            if(!userBooks.contains(i))
-            {
-                userBooks.add(i);
-            }
-        }
-
-        for(int i : wishlist)
-        {
-            if(!userBooks.contains(i))
-            {
-                userBooks.add(i);
-            }
-        }
-
-    }
-
     //adapter for book display
-    class OtherBookListAdapter extends ArrayAdapter<Book> implements View.OnClickListener {
-        public OtherBookListAdapter(Context context, int resource, List<Book> objects) {
+    class OwnedListAdapter extends ArrayAdapter<Book> implements View.OnClickListener {
+        public OwnedListAdapter(Context context, int resource, List<Book> objects) {
             super(context, resource, objects);
         }
+
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -119,8 +154,8 @@ public class ExchangeBookList extends AppCompatActivity {
             ImageView matchImage = convertView.findViewById(R.id.searchMatchImage);
             TextView matchUserId = convertView.findViewById(R.id.searchMatchUserId);
             TextView matchBookTitle = convertView.findViewById(R.id.searchMatchBookTitle);
-            Button bookButton = convertView.findViewById(R.id.searchAddBookListButton);
-            Button wishButton = convertView.findViewById(R.id.searchAddWishListButton);
+            Button removeBookListButton = convertView.findViewById(R.id.searchAddBookListButton);
+            Button invisibleButton = convertView.findViewById(R.id.searchAddWishListButton);
 
             if (book.getBookPic() != null && !book.getBookPic().equals("")) {
                 Picasso.with(getContext()).load(book.getBookPic()).into(matchImage, new Callback() {
@@ -142,13 +177,12 @@ public class ExchangeBookList extends AppCompatActivity {
             //make author textView invisible
             matchBookTitle.setVisibility(View.INVISIBLE);
 
-            ExchangeBookList.OtherBookListButtonHandler buttonHandler = new ExchangeBookList.OtherBookListButtonHandler(book);
+            ExchangeBookList.OtherBookListButtonHandler buttonHandler = new ExchangeBookList.OtherBookListButtonHandler(book, getContext());
 
-            //add onclick listener to buttons
-            bookButton.setOnClickListener(buttonHandler);
-//            wishButton.setOnClickListener(buttonHandler);
-            wishButton.setVisibility(View.INVISIBLE);
-            bookButton.setText("PICK");
+            //edit remove button
+            removeBookListButton.setText("PICK");
+            removeBookListButton.setOnClickListener(buttonHandler);
+            invisibleButton.setVisibility(View.INVISIBLE);
 
             return convertView;
         }
@@ -161,32 +195,20 @@ public class ExchangeBookList extends AppCompatActivity {
 
     class OtherBookListButtonHandler implements View.OnClickListener {
         private Book mBook;
-        public OtherBookListButtonHandler(Book b) {
+        private Context mContext;
+
+        public OtherBookListButtonHandler(Book b, Context context) {
             mBook = b;
+            mContext = context;
         }
 
-        @Override
-        public void onClick(View v) {
-
-            ViewGroup container = (ViewGroup)v.getParent();
-            int bookID = -1;
-
-            switch (v.getId()) {
-                case R.id.searchAddBookListButton:
-                    //add book to user book list
-                    bookID = mBook.getBookId();
-                    mUserViewModel.addOwnedList(bookID);
-                    mUserViewModel.addOwnedUser(bookID, mUserID );
-
-                    //make add and wish button invisible
-                    v.setVisibility(View.INVISIBLE);
-                    container.getChildAt(4).setVisibility(View.INVISIBLE);
-
-                    Toast.makeText(getApplicationContext(), "Added book to Book List!", Toast.LENGTH_SHORT).show();
-                    break;
-
-            }
-
+        public void onClick(View v){
+            Intent intent = new Intent(this.mContext, ExchangeActivity.class);
+                intent.putExtra("ownerId", mUserViewModel.getCurrUserId());
+                intent.putExtra("ownerBookId", mBook.getBookId());
+                intent.putExtra("otherOwnerId", mOtherOwnerId);
+                intent.putExtra("otherOwnerBookId", mOtherOwnerBookId);
+                this.mContext.startActivity(intent);
         }
     }
 }

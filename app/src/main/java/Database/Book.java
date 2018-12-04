@@ -54,8 +54,14 @@ public class Book {
     public void addWishUser (Integer i) {
         this.mWishUser.add(i);
     }
+    public void removeWishUser (Integer i) {
+        this.mWishUser.remove(i);
+    }
     public void addOwnedUser (Integer i) {
         this.mOwnedUser.add(i);
+    }
+    public void removeOwnedUser (Integer i) {
+        this.mOwnedUser.remove(i);
     }
 
 }
