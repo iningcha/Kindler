@@ -2,8 +2,8 @@ package com.example.kindler;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +26,7 @@ import java.util.Set;
 import Database.Book;
 import Database.UserViewModel;
 
-public class OtherBookList extends AppCompatActivity implements View.OnClickListener {
+public class ExchangeBookList extends AppCompatActivity {
     private static List<Book> books;
     private int mUserID;
     private int mListOwnerID;
@@ -53,18 +53,12 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
         mBookList = findViewById(R.id.otherBookListDisplay);
 
         //create adapter and bind with list view
-        this.bookAdapter = new OtherBookListAdapter(this, R.layout.customlist, new ArrayList<Book>());
+        this.bookAdapter = new ExchangeBookList.OtherBookListAdapter(this, R.layout.customlist, new ArrayList<Book>());
         this.mBookList.setAdapter(bookAdapter);
 
         //clear adapter and add books
         bookAdapter.clear();
         bookAdapter.addAll(books);
-    }
-
-    //onclick listener for for button
-    @Override
-    public void onClick(View v){
-
     }
 
     //load book pictures
@@ -148,18 +142,13 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
             //make author textView invisible
             matchBookTitle.setVisibility(View.INVISIBLE);
 
-            OtherBookListButtonHandler buttonHandler = new OtherBookListButtonHandler(book);
+            ExchangeBookList.OtherBookListButtonHandler buttonHandler = new ExchangeBookList.OtherBookListButtonHandler(book);
 
             //add onclick listener to buttons
             bookButton.setOnClickListener(buttonHandler);
-            wishButton.setOnClickListener(buttonHandler);
-            wishButton.setText("Exchange");
-
-            //make buttons invisible if book is already in a user list
-            if(userBooks.contains(book.getBookId())){
-                bookButton.setVisibility(View.INVISIBLE);
-                wishButton.setVisibility(View.INVISIBLE);
-            }
+//            wishButton.setOnClickListener(buttonHandler);
+            wishButton.setVisibility(View.INVISIBLE);
+            bookButton.setText("PICK");
 
             return convertView;
         }
@@ -194,19 +183,6 @@ public class OtherBookList extends AppCompatActivity implements View.OnClickList
                     container.getChildAt(4).setVisibility(View.INVISIBLE);
 
                     Toast.makeText(getApplicationContext(), "Added book to Book List!", Toast.LENGTH_SHORT).show();
-                    break;
-
-                case R.id.searchAddWishListButton:
-//                    //add book to user book list
-//                    bookID = mBook.getBookId();
-//                    mUserViewModel.addWishList(bookID);
-//                    mUserViewModel.addWishUser(bookID, mUserID );
-//
-//                    //make add and wish button invisible
-//                    v.setVisibility(View.INVISIBLE);
-//                    container.getChildAt(3).setVisibility(View.INVISIBLE);
-//
-//                    Toast.makeText(getApplicationContext(), "Added book to Wish List!", Toast.LENGTH_SHORT).show();
                     break;
 
             }

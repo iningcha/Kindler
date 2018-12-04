@@ -16,9 +16,9 @@
         android:id="@+id/menu_wishlist"
         android:title="@string/wish_list"
         app:showAsAction="never" />
-    <!--<item  android:id="@+id/menu_matches"-->
-        <!--android:title="@string/match"-->
-        <!--app:showAsAction="never"/>-->
+    <item  android:id="@+id/menu_matches"
+        android:title="@string/match"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/menu_users"
         android:title="@string/browse_users"
