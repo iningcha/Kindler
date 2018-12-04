@@ -72,26 +72,22 @@ public class User {
     public void addWishList(Integer bid) {this.mWishList.add(bid);}
     //remove from WishList according to book id
     public void removeWishList(Integer bid) {
-        int index = 0;
         for (int i=0; i<this.mWishList.size(); i++) {
             if (this.mWishList.get(i) == bid) {
-                index = i;
+                this.mWishList.remove(i);
             }
         }
-        this.mWishList.remove(index);
     }
 
     //OwnedList
     public void setOwnedList(ArrayList<Integer> mOwnedList) {this.mOwnedList = mOwnedList;}
     public void addOwnedList(Integer i) {this.mOwnedList.add(i);}
     public void removeOwnedList(Integer bid) {
-        int index = 0;
-        for (int i=0; i<this.mWishList.size(); i++) {
-            if (this.mWishList.get(i) == bid) {
-                index = i;
+        for (int i=0; i<this.mOwnedList.size(); i++) {
+            if (this.mOwnedList.get(i) == bid) {
+                this.mOwnedList.remove(i);
             }
         }
-        this.mWishList.remove(index);
     }
 }
 
