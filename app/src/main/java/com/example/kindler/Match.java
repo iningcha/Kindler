@@ -43,7 +43,8 @@ public class Match extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match);
 
-        final ListView matchList = findViewById(R.id.matchList);
+        ListView matchList = findViewById(R.id.matchList);
+        matchList.setEmptyView(findViewById(R.id.emptyView));
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         mUserViewModel.generateMatch();
@@ -67,28 +68,31 @@ public class Match extends AppCompatActivity {
 
         //getting the bookID, userId, and images from the database
 
-        CustomAdapter customAdapter = new CustomAdapter();
+        if(mMatchList.size() > 0 ){
+            CustomAdapter customAdapter = new CustomAdapter();
+            matchList.setAdapter(customAdapter);
 
-        matchList.setAdapter(customAdapter);
+            matchList.setOnItemClickListener(new OnItemClickListener(){
 
-        matchList.setOnItemClickListener(new OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?>adapter,View v, int position, long id){
 
-            @Override
-            public void onItemClick(AdapterView<?>adapter,View v, int position, long id){
+                    Intent intent = new Intent(Match.this, MatchDetail.class);
+                    String matchUser = userNames.get(position);
+                    String bookName = bookTitles.get(position);
+                    int imageName = images[position];
+                    intent.putExtra("matchUser", matchUser);
+                    intent.putExtra("bookName", bookName);
+                    intent.putExtra("image", imageName);
 
-            Intent intent = new Intent(Match.this, MatchDetail.class);
-            String matchUser = userNames.get(position);
-            String bookName = bookTitles.get(position);
-            int imageName = images[position];
-            intent.putExtra("matchUser", matchUser);
-            intent.putExtra("bookName", bookName);
-            intent.putExtra("image", imageName);
+                    startActivity(intent);
 
-            startActivity(intent);
+                }
 
-            }
+            });
+        }
 
-        });
+
 
         Toolbar mtoolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mtoolbar);
