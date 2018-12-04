@@ -96,6 +96,7 @@ public class ExchangeActivity extends AppCompatActivity {
                 otherBook.addOwnedUser(owner.getUserId());
                 other.addOwnedList(ownerBook.getBookId());
                 ownerBook.addOwnedUser(other.getUserId());
+                finish();
             }
         });
     }

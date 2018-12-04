@@ -208,6 +208,7 @@ public class ExchangeBookList extends AppCompatActivity {
                 intent.putExtra("ownerBookId", mBook.getBookId());
                 intent.putExtra("otherOwnerId", mOtherOwnerId);
                 intent.putExtra("otherOwnerBookId", mOtherOwnerBookId);
+                finish();
                 this.mContext.startActivity(intent);
         }
     }
