@@ -80,13 +80,13 @@ public abstract class UserRoomDatabase extends RoomDatabase {
             p.setProfileBiography("obsessed with fantasy");
             p.setProfilePicture("");
             u.setProfile(p);
-            u.addOwnedList(0);
             u.addOwnedList(1);
             u.addOwnedList(2);
             u.addOwnedList(3);
             u.addOwnedList(4);
             u.addOwnedList(5);
             u.addOwnedList(6);
+            u.setUserId(1000);
             mDao.insert(u);
 
             /*

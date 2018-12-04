@@ -173,6 +173,26 @@ public class UserViewModel extends AndroidViewModel{
 
     public void generateMatch() {
         mMatchRepository.deleteTable();
+        List<User> users = mUserRepository.getAllUser();
+        Log.d("UserViewModel", "generateMatch");
+        for (User u : users) {
+            for (User v : users) {
+                if (u != v) {
+                    for (Integer i : u.getOwnedList()) {
+                        for (Integer j : v.getWishList()) {
+                            Log.d("UserViewModel", "compare");
+                            if (i == j) {
+                                Log.d("UserViewModel", "create Match ");
+                                Match m = new Match(i, u.getUserId(), v.getUserId());
+                                mMatchRepository.insert(m);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
         List<Book> list = mBookRepository.getAllBook();
         for (Book b : list) {
             if (b.getOwnedUser().size() > 0 && b.getWishUser().size() > 0) {
@@ -186,6 +206,7 @@ public class UserViewModel extends AndroidViewModel{
                 }
             }
         }
+        */
     }
 
     //Match
