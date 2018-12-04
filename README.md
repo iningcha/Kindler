@@ -25,3 +25,14 @@ Project 2.6 Sprint #2
 4. Start Exchange button
 5. Connect Match to database
 6. Add Browse Users Page to view other users' profiles
+
+Project 2.7 Sprint #3
+1. Add Edit Profile Activity
+2. View Wish List and Book List from my profile
+3. Created book/wish list UI for other users
+4. Added different profile page display for other users’ profiles
+5. Added functionality to add to both book/wish list from other users’ book/wish list
+6. Exchange feature
+7. Edit profile after sign up 
+8. Add menu to all pages after logging in  
+
