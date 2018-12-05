@@ -80,30 +80,38 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
                 Intent intentsearch = new Intent(this, Search.class);
                 this.startActivity(intentsearch);
                 break;
+
+            case R.id.menu_home:
+                this.finish();
+                break;
             case R.id.menu_profile:
-                Intent intentprofile = new Intent(this, Profile.class);
-                this.startActivity(intentprofile);
+
                 break;
             case R.id.menu_booklist:
+                this.finish();
                 Intent intentbooklist = new Intent(this, BookListActivity.class);
                 this.startActivity(intentbooklist);
                 break;
             case R.id.menu_wishlist:
+                this.finish();
                 Intent intentwishlist = new Intent(this,WishListActivity.class);
                 this.startActivity(intentwishlist);
                 break;
             case R.id.menu_matches:
+                this.finish();
                 Intent intentmatches = new Intent(this, Match.class);
                 this.startActivity(intentmatches);
                 break;
             case R.id.menu_users:
+                this.finish();
                 Intent intentUsers = new Intent(this, UserListActivity.class);
                 this.startActivity(intentUsers);
                 break;
             case R.id.menu_logout:
+                this.finish();
                 Toast.makeText(getApplicationContext(), "Logged Out!" , Toast.LENGTH_SHORT ).show();
                 Intent intentlogout = new Intent(this, LoginActivity.class);
-                this.startActivity(intentlogout);
+                startActivity(intentlogout);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
